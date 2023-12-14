@@ -1,6 +1,8 @@
-
 # recipe-recommender
 
+## Workflow
+
+pull from master, checkout branch, make changes and commits, push to branch, submit pr, let other ppl know, others will review and merge it for you
 
 ## Branch and Commit Naming Conventions
 
@@ -15,14 +17,6 @@ To commit files: use commit message "YOUR BRANCH NAME then your commit message"
 Ex: "FE-make_share_button created some button"
 
 ## For running
-
->>>>>>> Stashed changes
->>>>>>>
->>>>>>
->>>>>
->>>>
->>>
->>
 
 [Install NVM](https://github.com/nvm-sh/nvm#installing-and-updating)
 
@@ -56,14 +50,3 @@ docker-compose up
 Frontend is at localhost:3000
 
 Backend is at localhost:8000
-<<<<<<< Updated upstream
-========================
-
->>>>>>> Stashed changes
->>>>>>> Stashed changes
->>>>>>>
->>>>>>
->>>>>
->>>>
->>>
->>
