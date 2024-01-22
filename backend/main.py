@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from pymongo import MongoClient
 
+import engine as engine 
+
 app = FastAPI()
 
 # MongoDB setup (replace with your connection string)
@@ -9,7 +11,8 @@ db = client.your_database_name
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    pw = engine.get_creds()
+    return {"Hello": "World", "PW": pw}
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int):
