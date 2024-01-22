@@ -54,3 +54,13 @@ docker-compose up
 Frontend is at localhost:3000
 
 Backend is at localhost:8000
+
+add .env file inside backend folder:
+add your openai api key
+
+In your .env file
+```
+DB_USERNAME=myusername
+DB_PASSWORD=mypassword
+API_PASSWORD=mypassword
+```
