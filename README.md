@@ -17,6 +17,7 @@ To commit files: use commit message "YOUR BRANCH NAME then your commit message"
 Ex: "FE-make_share_button created some button"
 
 ## For running
+### Mac User
 
 [Install NVM](https://github.com/nvm-sh/nvm#installing-and-updating)
 
@@ -28,6 +29,9 @@ nvm install
 nvm install 20.10.0
 nvm use 20.10.0
 ```
+### Windows User
+either install node version 20.10.0
+or install [NVM for windows](https://github.com/coreybutler/nvm-windows)
 
 install docker desktop
 
