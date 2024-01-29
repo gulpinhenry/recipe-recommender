@@ -18,3 +18,10 @@ def read_root():
 def read_item(item_id: int):
     item = db.your_collection_name.find_one({"item_id": item_id})
     return {"item_id": item_id, "item": item}
+
+@app.get("/recipe") # TODO: update endpoint include ingredients and dietary preferences parameter, also make sure UI has a loading screen
+async def get_recipe_endpoint():
+    ingredients = ["tomatoes", "basil", "garlic"]
+    dietary_preferences = "vegan"
+    recipe = await engine.get_recipe(ingredients, dietary_preferences)
+    return recipe

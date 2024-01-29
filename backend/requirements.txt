@@ -2,3 +2,5 @@ fastapi==0.105.0
 uvicorn
 pymongo
 python-dotenv
+openai
+asyncio
