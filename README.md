@@ -62,5 +62,5 @@ In your .env file
 ```
 DB_USERNAME=myusername
 DB_PASSWORD=mypassword
-API_PASSWORD=mypassword
+OPENAI_API_KEY=mypassword
 ```
