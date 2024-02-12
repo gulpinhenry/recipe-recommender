@@ -27,14 +27,14 @@
     margin-left: -10px;
 }
 #L-box:hover{
-    background-color: rgba(186, 190, 202, 1);
+    background-color: rgba(233,238,252,255);
     transition: .4s;
     cursor: pointer;
     color: black;
 }
 #L-box.active{
     font-weight: 500;
-    background: linear-gradient(107deg, rgba(233,238,252,255) 11.1%, rgba(233,238,252,255) 95.3%);
+    background: linear-gradient(107deg, rgba(218, 224, 235, 1) 11.1%, rgba(218, 224, 235, 1) 95.3%);
     color: black;
 }
 #L-box.active p{
