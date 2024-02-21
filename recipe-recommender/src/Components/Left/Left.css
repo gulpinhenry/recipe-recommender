@@ -126,7 +126,7 @@
 @media screen and (max-width:1024px){
     .L-features{
         background-color: #ffffff;
-        height: 370px;
+        height: 100%;
         padding:5px 5px 400px 5px;
         margin-top:10px;
         border-radius: 10px;
