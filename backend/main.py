@@ -1,11 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pymongo import MongoClient
 # from dotenv import load_dotenv, find_dotenv
 import engine
 import os
 import json
 
-import models
+from models import User, Rating, Recipe, Post
 import crud
 import seed
 
@@ -40,18 +40,24 @@ async def get_recipe_endpoint():
     recipe = await engine.get_recipe(ingredients, dietary_preferences)
     return recipe
 
-@app.get("/signup")
-def signup(data):
-    signupDetails = json.loads(data)
-    print(signupDetails)
-    return crud.create_user(signupDetails)
-    # return the main page
+@app.post("/signup")
+def signup(user_details: User):
+    signup_details = user_details.dict()
+    print(signup_details)
+    try:
+        return crud.create_user(signup_details)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-
-@app.get("/login")
-def login(data):
-    loginDetails = json.loads(data)
-    print(loginDetails)
-    return crud.login_user(data)
+@app.post("/login")
+def login(login_request: User):
+    try:
+        login_details = login_request.dict()
+        print(login_details)
+        # Call the login_user function with the login details
+        response = crud.login_user(login_details)
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
     
 # todo: figure out how to parse data, validate model, push to DB
