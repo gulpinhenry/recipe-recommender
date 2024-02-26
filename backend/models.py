@@ -3,23 +3,22 @@ from pydantic import BaseModel, Field, EmailStr
 from datetime import datetime
 
 class User(BaseModel):
-    userID: str = Field(..., alias='_id') 
-    username: str
+    username: Optional[str] = None
     email: EmailStr
     password: str
-    tastePreferences: List[str]
-    dietAllergy: List[str]
+    tastePreferences: Optional[List[str]] = []
+    dietAllergy: Optional[List[str]] = []
 
 
 class Rating(BaseModel):
-    ratingID: str = Field(..., alias='_id')
+    ratingID: str
     user: User
     recipe: 'Recipe'  
     score: int
 
 
 class Recipe(BaseModel):
-    recipeID: str = Field(..., alias='_id')
+    recipeID: str
     name: str
     ingredients: List[str] 
     instructions: str
@@ -29,7 +28,7 @@ class Recipe(BaseModel):
 
 
 class Post(BaseModel):
-    postID: str = Field(..., alias='_id')
+    postID: str
     name: str
     ingredients: List[str] 
     instructions: str
