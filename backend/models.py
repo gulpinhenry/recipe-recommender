@@ -45,4 +45,4 @@ class Post(BaseModel):
 User.update_forward_refs()
 Rating.update_forward_refs()
 Recipe.update_forward_refs()
-Ingredient.update_forward_refs()
+Post.update_forward_refs()
