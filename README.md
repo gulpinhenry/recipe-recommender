@@ -60,7 +60,6 @@ add your openai api key
 
 In your .env file
 ```
-DB_USERNAME=myusername
-DB_PASSWORD=mypassword
+MONGO_DB==mypassword
 OPENAI_API_KEY=mypassword
 ```

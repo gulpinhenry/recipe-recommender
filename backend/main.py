@@ -3,10 +3,12 @@ from pymongo import MongoClient
 # from dotenv import load_dotenv, find_dotenv
 import engine
 import os
+import json
 
 import models
 import crud
 import seed
+
 
 app = FastAPI()
 # load_dotenv()
@@ -39,4 +41,17 @@ async def get_recipe_endpoint():
     return recipe
 
 @app.get("/signup")
-def signup(data)
+def signup(data):
+    signupDetails = json.loads(data)
+    print(signupDetails)
+    return crud.create_user(signupDetails)
+    # return the main page
+
+
+@app.get("/login")
+def login(data):
+    loginDetails = json.loads(data)
+    print(loginDetails)
+    return crud.login_user(data)
+    
+# todo: figure out how to parse data, validate model, push to DB
