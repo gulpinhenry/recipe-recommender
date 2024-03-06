@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
 import ssl
 # from dotenv import load_dotenv, find_dotenv
@@ -16,6 +17,20 @@ app = FastAPI()
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 ssl_context.load_cert_chain('./ssl/cert.pem', keyfile='./ssl/key.pem')
 # load_dotenv()
+
+origins = [
+    "http://localhost:3000",  # React's default local development URL
+    # TO ADD: production domain
+]
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # MongoDB setup (replace with your connection string)
 # client = MongoClient(os.environ.get("MONGO_DB"))
