@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException
 from pymongo import MongoClient
-import ssl
 # from dotenv import load_dotenv, find_dotenv
 import engine
 import os
@@ -11,10 +10,7 @@ import crud
 import seed
 
 
-
 app = FastAPI()
-ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-ssl_context.load_cert_chain('./ssl/cert.pem', keyfile='./ssl/key.pem')
 # load_dotenv()
 
 # MongoDB setup (replace with your connection string)
@@ -53,7 +49,7 @@ def signup(user_details: User):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@app.post("/login") 
+@app.post("/login")
 def login(login_request: User):
     try:
         login_details = login_request.dict()

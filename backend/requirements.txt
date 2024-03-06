@@ -1,6 +1,5 @@
 fastapi==0.105.0
-uvicorn[standard]
-cryptography
+uvicorn
 pymongo
 python-dotenv
 openai
