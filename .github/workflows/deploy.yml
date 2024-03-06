@@ -12,6 +12,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    # Decode and prepare SSL certificates
+    - name: Decode SSL Certificates
+      run: |
+        echo "${{ secrets.KEY_PEM_BASE64 }}" | base64 -d > ./ssl/key.pem
+        echo "${{ secrets.CERT_PEM_BASE64 }}" | base64 -d > ./ssl/cert.pem
+
     - name: Deploy to DigitalOcean
       uses: appleboy/ssh-action@master
       with:
@@ -22,5 +28,3 @@ jobs:
           cd recipe-recommender
           git pull
           docker-compose up -d --build
-
-
