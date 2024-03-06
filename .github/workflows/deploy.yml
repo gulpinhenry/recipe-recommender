@@ -15,8 +15,8 @@ jobs:
     # Decode and prepare SSL certificates
     - name: Decode SSL Certificates
       run: |
-        echo "${{ secrets.KEY_PEM_BASE64 }}" | base64 -d > ./ssl/key.pem
-        echo "${{ secrets.CERT_PEM_BASE64 }}" | base64 -d > ./ssl/cert.pem
+        echo "${{ secrets.KEY_PEM_BASE64 }}" | base64 -d > ../../backend/ssl/key.pem
+        echo "${{ secrets.CERT_PEM_BASE64 }}" | base64 -d > ../../backend/ssl/cert.pem
 
     - name: Deploy to DigitalOcean
       uses: appleboy/ssh-action@master
