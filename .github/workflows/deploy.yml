@@ -15,6 +15,7 @@ jobs:
     # Decode and prepare SSL certificates
     - name: Decode SSL Certificates
       run: |
+        ls -la
         echo "${{ secrets.KEY_PEM_BASE64 }}" | base64 -d > ../../backend/ssl/key.pem
         echo "${{ secrets.CERT_PEM_BASE64 }}" | base64 -d > ../../backend/ssl/cert.pem
 
