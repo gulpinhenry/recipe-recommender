@@ -2,7 +2,9 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 
-require('dotenv').config()
+require('dotenv').config( { path: './env' } )
+
+console.log(process.env)
 const db = require('./config/connection');
 
 const app = express();
@@ -12,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 console.log(process.env.NODE_ENV);
+console.log(__dirname)
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../recipe-recommender/build')));
 }
