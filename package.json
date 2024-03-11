@@ -7,8 +7,7 @@
       "start": "node backend/server.js",
       "develop": "concurrently \"cd backend && npm run watch\" \"cd recipe-recommender && npm start\"",
       "install": "cd backend && npm i && cd ../recipe-recommender && npm i",
-      "build": "cd recipe-recommender && npm run build",
-      "vercel-postbuild": "npm install && npm run build"
+      "build": "cd recipe-recommender && npm run build"
     },
     "repository": {
       "type": "git",

@@ -17,13 +17,9 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../recipe-recommender/build')));
 }
 else {
-    // app.use(cors());
+    app.use(cors());
 }
 
-// app.get('/message', (req, res) => {
-//     res.json({ message: "Hello from server!" });
-// });
-  
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../recipe-recommender/build/index.html'));
 });
