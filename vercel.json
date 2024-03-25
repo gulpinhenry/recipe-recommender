@@ -2,19 +2,33 @@
     "version": 2,
     "builds": [
       {
-        "src": "./backend/server.js",
+        "src": "backend/server.js",
         "use": "@vercel/node"
       },
       {
-        "src": "./recipe-recommender/build",
-        "use": "@vercel/static"
+        "src": "recipe-recommender/package.json",
+        "use": "@vercel/static-build",
+        "config": {
+          "distDir": "build"
+        }
       }
     ],
-  
-    "rewrites": [
+    "routes": [
       {
-        "source": "/(.*)",
-        "destination": "/backend/server.js"
+        "src": "/api/(.*)",
+        "dest": "backend/server.js"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "recipe-recommender/build/$1"
       }
+    ],
+    "env": {
+      "NODE_ENV": "production"
+    },
+    "ignore": [
+      "recipe-recommender/node_modules",
+      "backend/node_modules"
     ]
   }
+  
