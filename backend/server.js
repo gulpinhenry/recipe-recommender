@@ -20,6 +20,11 @@ else {
     app.use(cors());
 }
 
+app.get('/hello', (req, res) => {
+    console.log("herer")
+    res.json({ message: "hello" });
+});
+
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../recipe-recommender/build/index.html'));
 });

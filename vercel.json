@@ -22,9 +22,6 @@
         "src": "/(.*)",
         "dest": "recipe-recommender/build/$1"
       }
-    ],
-    "env": {
-      "NODE_ENV": "production"
-    }
+    ]
   }
   
