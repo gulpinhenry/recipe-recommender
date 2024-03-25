@@ -13,6 +13,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../recipe-recommender/build')));
 }
