@@ -125,6 +125,9 @@ const handleDelete=(id)=>{
 
   return (
     <div className='post'>
+        <Link to="/FriendsId" style={{textDecoration:"none"}}>
+        <h1 className='title'>{post.title}</h1>
+        </Link>
       <div className='post-header'>
         <Link to="/FriendsId" style={{textDecoration:"none"}}>
         <div className='post-user' onClick={()=>handleFriendsId(post.id)} style={{cursor:"pointer"}}>
@@ -133,7 +136,6 @@ const handleDelete=(id)=>{
             <p className='datePara'>{post.datetime}</p>
         </div>
         </Link>
-
          <div className='delete'>
          {showDelete && (<div className="options">
             <button><PiSmileySad />Not Interested in this post</button>

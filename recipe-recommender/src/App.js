@@ -1,13 +1,14 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom'
-import MainLayout from './Pages/MainLayout'
+import MainLayout from './PageLayout/MainLayout'
+import PostLayout from './PageLayout/PostLayout'
 
 function App() {
   return (
 <div>
   <div className='App'>
       <Routes>
-        <Route path='/' element={<MainLayout />} />
+        <Route path='/' element={<PostLayout />} />
       </Routes>
     </div>
 </div>

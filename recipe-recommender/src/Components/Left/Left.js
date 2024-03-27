@@ -41,11 +41,11 @@ const Left = ({
         <span style={{ marginLeft: '8px' }}>Saved Post</span>
       </div>
 
-      <div id='L-box' onClick={()=>setBtnActive("#settings")} className={btnActive === "#settings" ? "active" : ""}>
+      {/* <div id='L-box' onClick={()=>setBtnActive("#settings")} className={btnActive === "#settings" ? "active" : ""}>
         <FiSettings
         className='margin'/>
         <span style={{ marginLeft: '8px' }}>Settings</span>
-      </div>
+      </div> */}
 
     </div>
   )
