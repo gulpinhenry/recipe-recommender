@@ -1,7 +1,10 @@
+const { getRecipe } = require('./engine');
+
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const { test_engine , get_recipe} = require('./utils/engine');
+
 
 require('dotenv').config( { path: './backend/.env' } )
 
@@ -36,6 +39,12 @@ app.get('/hello', (req, res) => {
     });
 
 });
+
+app.get('/testengine', async (req, res) => {
+    let s = await getRecipe(["tomato", "pasta", "cheese"], ["vegetarian"], [null])
+    console.log(s)
+    res.json({message: s})
+})
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../recipe-recommender/build/index.html'));
