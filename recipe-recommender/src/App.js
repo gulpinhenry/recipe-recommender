@@ -8,7 +8,9 @@ function App() {
 <div>
   <div className='App'>
       <Routes>
-        <Route path='/' element={<PostLayout />} />
+         <Route path='/' element={<MainLayout />} />
+        {/* <Route path='/create' element={<PostLayout />} /> */} 
+        {/* <Route path='/' element={<PostLayout />} /> */}
       </Routes>
     </div>
 </div>

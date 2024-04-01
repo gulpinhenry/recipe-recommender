@@ -77,10 +77,9 @@ const Landingpage = ({}) => {
   return (
     <div className="interface">
       <Nav />
-      <div className="home">
+      <div className="home_layout">
         <Left />
         <PostComp posts={posts} />
-        {/* <Right /> */}
       </div>
     </div>
   );

@@ -67,19 +67,7 @@ const MealSingle = ({}) => {
 
             <div className='details-intro'>
               <h3 className='title text-orange'>{meal?.title}</h3>
-              <div className='py-4'>
-                <div className='category flex align-center'>
-                  <span className='text-uppercase fw-8 ls-1 my-1'>category: &nbsp;</span>
-                  <span className='text-uppercase ls-2'>{ meal?.category }</span>
-                </div>
 
-                <div className='source flex align-center'>
-                  <span className='fw-7'>Source: &nbsp;</span>
-                  <a href = {meal.source}>
-                    {meal.source ? (meal?.source).substring(0, 40) + "..." : "Not found" }
-                  </a>
-                </div>
-              </div>
 
               <div className='tags flex align-start flex-wrap'>
                 <h6 className='fs-16'>Tags:</h6>

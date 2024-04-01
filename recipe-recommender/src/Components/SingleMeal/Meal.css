@@ -66,11 +66,13 @@
     padding-right: 2rem;
     padding-left: 2rem;
 }
-.sc-details .details-head .details-intro .title {
+.sc-details .title {
     padding: 12px 0;
     font-size: 24px;
-    border-bottom: 1px solid orange;
+    color: rgb(214,102,47);
+    border-bottom: 1px solid rgb(214,102,47);
 }
+
 .sc-details .details-head .details-intro .source a:hover {
     color: orange;
 }
@@ -85,7 +87,7 @@
     color: orange;
 }
 .sc-details .details-head .details-intro .ingredients {
-    background-color: orange;
+    background-color: rgb(214,102,47)
 }
 .sc-details .details-head .details-intro .ingredients h6 {
     margin-right: 12px;
@@ -159,6 +161,7 @@
 }
 .sc-details .details-body .measures ul li .li-icon {
     margin-right: 8px;
+    color: rgb(214,102,47);
 }
 @media screen and (min-width: 992px) {
     .sc-details .details-body .measures {
@@ -176,4 +179,5 @@
 }
 .sc-details .details-body .instructions ul li .li-icon {
     margin-top: 3px;
+    color: rgb(214,102,47);
 }
