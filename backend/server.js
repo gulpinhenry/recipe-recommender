@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const { test_engine , get_recipe} = require('./utils/engine');
 
 require('dotenv').config( { path: './backend/.env' } )
 
@@ -24,8 +25,16 @@ else {
 }
 
 app.get('/hello', (req, res) => {
-    console.log("herer")
-    res.json({ message: "hello" });
+    let ingredients = ["tomato", "pasta", "salt", "basil", "oil"]
+    let dietaryPreferences = ["vegan"]
+    let allergies = []
+    
+    get_recipe(ingredients, dietaryPreferences, allergies).then(recipe => {
+        res.json({ message: recipe });
+    }).catch(err => {
+        res.status(500).json({ err: 'An error occurred' });
+    });
+
 });
 
 app.get('*', (req, res) => {
