@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Rating = require('./Rating');
 
 const recipeSchema = new mongoose.Schema({
   name: {
@@ -22,10 +23,10 @@ const recipeSchema = new mongoose.Schema({
     type: String,
     default: null, // Defaults to null if not provided
   }],
-  ratings: [{
+  ratings: [[{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Rating', // References the Rating model
-  }]
+  }]]
 }, {
   timestamps: true, // Automatically adds createdAt and updatedAt timestamps
 });

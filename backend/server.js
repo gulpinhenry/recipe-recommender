@@ -11,10 +11,10 @@ const db = require('./config/connection');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const routes = require('./routes');
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 
@@ -24,6 +24,8 @@ if (process.env.NODE_ENV === 'production') {
 else {
     app.use(cors());
 }
+
+app.use('/api', routes)
 
 app.get('/hello', (req, res) => {
     let ingredients = ["tomato", "pasta", "salt", "basil", "oil"]
