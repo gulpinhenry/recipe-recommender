@@ -4,26 +4,26 @@
     "description": "",
     "main": "backend/server.js",
     "scripts": {
-      "start": "node backend/server.js",
-      "develop": "concurrently \"cd backend && npm run watch\" \"cd recipe-recommender && npm start\"",
-      "install": "cd backend && npm i && cd ../recipe-recommender && npm i",
-      "build": "cd recipe-recommender && npm run build"
+        "start": "node backend/server.js",
+        "develop": "concurrently \"cd backend && npm run watch\" \"cd recipe-recommender && npm start\"",
+        "install": "cd backend && npm i && cd ../recipe-recommender && npm i",
+        "build": "cd recipe-recommender && npm run build"
     },
     "repository": {
-      "type": "git",
-      "url": "git+https://github.com/gulpinhenry/recipe-recommender.git"
+        "type": "git",
+        "url": "git+https://github.com/gulpinhenry/recipe-recommender.git"
     },
     "keywords": [],
     "author": "Henry Kam",
     "license": "MIT",
     "bugs": {
-      "url": "https://github.com/gulpinhenry/recipe-recommender/issues"
+        "url": "https://github.com/gulpinhenry/recipe-recommender/issues"
     },
     "devDependencies": {
-      "concurrently": "^5.1.0"
+        "concurrently": "^5.1.0"
     },
     "dependencies": {
-      "bcryptjs": "^2.4.3",
-      "i": "0.3.7"
+        "bcryptjs": "^2.4.3",
+        "i": "0.3.7"
     }
 }
