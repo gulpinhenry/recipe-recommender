@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const cors = require('cors');
 const { test_engine , get_recipe} = require('./utils/engine');
@@ -13,6 +14,14 @@ const PORT = process.env.PORT || 3001;
 
 const routes = require('./routes');
 
+const sess = {
+    secret: 'i want food',
+    cookie: {maxAge: 3600000},
+    resave: false,
+    saveUnitialized: true,
+}
+
+app.use(session(sess));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -22,7 +31,10 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../recipe-recommender/build')));
 }
 else {
-    app.use(cors());
+    app.use(cors({
+        origin: 'http://localhost:3000', // Your React app's URL
+        credentials: true
+      }));
 }
 
 app.use('/api', routes)
