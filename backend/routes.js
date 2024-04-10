@@ -20,6 +20,41 @@ router.get('/checkSession', (req, res) => {
 
 /**
  * 
+ * Logs in a user.
+ */
+router.post('/user/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    // Find the user by username
+    const user = await User.findOne({ username });
+
+    if (!user || !(await user.isCorrectPassword(password))) {
+      return res.status(401).json({
+        message: 'Invalid username or password',
+        error: 'INVALID USERNAME OR PASSWORD'
+      });
+    }
+
+    req.session.username = username;
+    req.session.sessionLoggedIn = true;
+
+    res.status(200).json({
+      success: true,
+      message: 'User login successful',
+      data: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error logging in',
+      error: error.message,
+    });
+  }
+});
+
+
+/**
+ * 
  * Creates a new user in the database.
  */
 router.post('/user/create', async (req, res) => {
@@ -28,7 +63,7 @@ router.post('/user/create', async (req, res) => {
     if (req.session.username || req.session.sessionLoggedIn) {
       return res.status(400).json({
         message: 'User already logged in or username taken',
-        error: 'STOPIT'
+        error: 'USER ALREADY LOGGED IN OR USERNAME TAKEN'
       });
     }
 
@@ -45,7 +80,7 @@ router.post('/user/create', async (req, res) => {
     req.session.username = username;
     req.session.sessionLoggedIn = true;
 
-    res.status(201).json({
+    res.status(200).json({
       success: true, // Ensure to send a success flag
       message: 'User created successfully',
       data: user,
