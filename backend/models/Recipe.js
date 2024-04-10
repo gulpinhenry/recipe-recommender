@@ -31,6 +31,22 @@ const recipeSchema = new mongoose.Schema({
   timestamps: true, // Automatically adds createdAt and updatedAt timestamps
 });
 
+recipeSchema.methods.getAvgScore = async function(){
+  const recipe = this;
+  const len = recipe.ratings.length;
+  let sum = 0;
+  if (len <= 0){
+    return 0;
+  }
+  else{
+    await recipe.populate('ratings')
+    for (let i = 0; i < len; i++) {
+      sum += recipe.ratings[i].score;
+    }
+  }
+  return sum/len;
+}
+
 const Recipe = mongoose.model('Recipe', recipeSchema);
 
 module.exports = Recipe;

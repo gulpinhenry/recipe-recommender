@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const Post = require('./Post');
+const Recipe = require('./Recipe');
 
 const ratingSchema = new mongoose.Schema({
   user: {
@@ -9,6 +11,11 @@ const ratingSchema = new mongoose.Schema({
   recipe: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Recipe', // This assumes your Recipe model is named 'Recipe'
+    required: true,
+  },
+  post: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Post', // This assumes your Recipe model is named 'Recipe'
     required: true,
   },
   score: {
@@ -28,6 +35,17 @@ const ratingSchema = new mongoose.Schema({
 }, {
   timestamps: true, // Adds createdAt and updatedAt timestamps
 });
+
+ratingSchema.pre('save', async function (next) {
+  const recipe = await Recipe.findById(this.recipe);
+  await recipe.ratings.push(this._id);
+
+  const post = await Post.findById(this.post);
+  await post.ratings.push(this._id);
+
+
+  next()
+})
 
 const Rating = mongoose.model('Rating', ratingSchema);
 

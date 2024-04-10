@@ -24,6 +24,22 @@ const postSchema = new mongoose.Schema({
   timestamps: true, // Automatically adds createdAt and updatedAt timestamps
 });
 
+postSchema.methods.getAvgScore = async function(){
+  const post = this;
+  const len = post.ratings.length;
+  let sum = 0;
+  if (len <= 0){
+    return 0;
+  }
+  else{
+    await recipe.populate('ratings')
+    for (let i = 0; i < len; i++) {
+      sum += recipe.ratings[i].score;
+    }
+  }
+  return sum/len;
+}
+
 const Post = mongoose.model('Post', postSchema);
 
 module.exports = Post;
