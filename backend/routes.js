@@ -24,9 +24,6 @@ router.post('/user/login', async (req, res) => {
       });
     }
 
-    req.session.username = username;
-    req.session.sessionLoggedIn = true;
-
     res.status(200).json({
       success: true,
       message: 'User login successful',
