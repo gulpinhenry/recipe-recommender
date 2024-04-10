@@ -1,5 +1,4 @@
 const express = require('express');
-const session = require('express-session');
 const path = require('path');
 const cors = require('cors');
 const { test_engine , get_recipe} = require('./utils/engine');
@@ -14,14 +13,6 @@ const PORT = process.env.PORT || 3001;
 
 const routes = require('./routes');
 
-const sess = {
-    secret: 'i want food',
-    cookie: {maxAge: 3600000},
-    resave: false,
-    saveUnitialized: true,
-}
-
-app.use(session(sess));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
