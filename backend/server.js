@@ -22,7 +22,10 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../recipe-recommender/build')));
 }
 else {
-    app.use(cors());
+    app.use(cors({
+        origin: 'http://localhost:3000', // Your React app's URL
+        credentials: true
+      }));
 }
 
 app.use('/api', routes)
