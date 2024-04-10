@@ -23,7 +23,7 @@ function App() {
             />
             <Route
               path='/create'
-              element={loggedIn ? <PostLayout /> : <Navigate to="/" />}
+              element={loggedIn ? <PostLayout /> : <LoginLayout/>}
             />
             <Route path='*' element={<WrongPageLayout />} />
           </Routes>
