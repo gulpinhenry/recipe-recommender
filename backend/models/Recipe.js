@@ -47,6 +47,10 @@ recipeSchema.methods.getAvgScore = async function(){
   return sum/len;
 }
 
+postSchema.virtual('Score').get(function(){
+  return this.getAvgScore();
+})
+
 const Recipe = mongoose.model('Recipe', recipeSchema);
 
 module.exports = Recipe;

@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const Rating = require('./Rating');
+const Recipe = require('./Recipe');
+const User = require('./User');
 
 const postSchema = new mongoose.Schema({
   caption: {
@@ -32,13 +35,17 @@ postSchema.methods.getAvgScore = async function(){
     return 0;
   }
   else{
-    await recipe.populate('ratings')
+    await post.populate('ratings')
     for (let i = 0; i < len; i++) {
-      sum += recipe.ratings[i].score;
+      sum += post.ratings[i].score;
     }
   }
   return sum/len;
 }
+
+postSchema.virtual('Score').get(function(){
+  return this.getAvgScore();
+})
 
 const Post = mongoose.model('Post', postSchema);
 
