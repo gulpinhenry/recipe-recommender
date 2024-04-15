@@ -3,21 +3,13 @@ import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload. TEST HERE
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  <div className='App'>
+      <Routes>
+         <Route path='/home' element={<MainLayout />} />
+        <Route path='/create' element={<PostLayout type={"create"}/>} />
+        <Route path='/profile' element={<PostLayout type={"profile"}/>} />
+        <Route path='/saved' element={<PostLayout type={"saved"}/>} />
+      </Routes>
     </div>
   );
 }
