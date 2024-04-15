@@ -5,6 +5,7 @@ const Post = require('./models/Post');
 const Rating = require('./models/Rating');
 const Recipe = require('./models/Recipe')
 const User = require('./models/User');
+const { get_recipe} = require('./utils/engine');
 
 /**
  * 
@@ -62,7 +63,24 @@ router.post('/user/create', async (req, res) => {
   }
 });
 
-// Create Recipe
+// Generate recipe with user data (pass in dietAllergy, tastePreferences, etc.)
+router.get('/recipe/generate', async (req, res) => {
+  try {
+    const { user } = req.body;
+    const recipes = get_recipe(user.dietAllergy, user.tastePreferences, user.dietAllergy);
+    res.status(200).json({
+      success: true,
+      data: recipes
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+});
+
+
+// Create Recipe with ingredients TODO: add the recipe to the user's recipesUsed
 router.post('/recipe/create', async (req, res) => {
   try {
     // Extracting recipe data from the request body
@@ -133,7 +151,7 @@ router.get('/post/user/:id', async (req, res) => {
     });
   }
 });
-// Get Recent Posts
+// Get Recent Posts TODO: update this to n recent posts
 router.get('/post/recent', async (req, res) => {
   try {
     const posts = await Post.find().sort({ createdAt: -1 }).limit(5).populate('user').populate('recipe').populate('ratings');
@@ -258,7 +276,7 @@ router.delete('/post/delete/:id', async (req, res) => {
 });
 
 
-// TODO: change this to user settings
+// TODO: POST for user settings
 // router.get('/getUserDietAllergies/:id', async (req, res) => {
 //   try {
 //       const dietAllergies = await getUserDietAllergies(req.params.id);

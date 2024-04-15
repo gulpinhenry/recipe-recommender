@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Rating = require('./Rating');
+const Post = require('./Post');
 
 const recipeSchema = new mongoose.Schema({
   name: {
@@ -47,7 +48,8 @@ recipeSchema.methods.getAvgScore = async function(){
   return sum/len;
 }
 
-postSchema.virtual('Score').get(function(){
+
+recipeSchema.virtual('Score').get(function(){
   return this.getAvgScore();
 })
 
