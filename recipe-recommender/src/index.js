@@ -4,12 +4,20 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import { MantineProvider } from '@mantine/core';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <MantineProvider
+      theme={{
+        // You can customize your theme here
+        colorScheme: 'light', // 'light' or 'dark'
+      }}
+    >
   <BrowserRouter>
     <App />
     </BrowserRouter>
+    </MantineProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

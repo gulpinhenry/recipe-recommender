@@ -3,14 +3,14 @@ import Homepage from './Homepage'
 import "../PostComp/PostComp.css"
 
 
-const PostComp = ({
+const PostComp = ({type
               }) => {
 
     const [searchResults,setSearchResults] =useState("")
-
   return (
     <div className='M-features'>
         <Homepage
+        type={type}
         />
     </div>
   )

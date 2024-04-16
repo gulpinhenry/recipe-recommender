@@ -20,7 +20,7 @@ import Cover3 from "../Assets/Friends-Cover/cover-3.jpg";
 
 import moment from "moment/moment";
 
-const Landingpage = ({}) => {
+const Landingpage = ({type}) => {
   const posts = [
     {
       id: 1,
@@ -79,7 +79,8 @@ const Landingpage = ({}) => {
       <Nav />
       <div className="home_layout">
         <Left />
-        <PostComp posts={posts} />
+        { <PostComp posts={posts} type={type}/>}
+
       </div>
     </div>
   );
