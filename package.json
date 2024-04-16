@@ -23,7 +23,7 @@
         "concurrently": "^5.1.0"
     },
     "dependencies": {
-      "bcryptjs": "^2.4.3",
-      "i": "0.3.7"
+        "bcryptjs": "^2.4.3",
+        "i": "0.3.7"
     }
 }

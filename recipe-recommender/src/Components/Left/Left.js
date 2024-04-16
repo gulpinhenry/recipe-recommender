@@ -22,12 +22,14 @@ const Left = ({
         </div>
       </Link>
 
+
       <Link to="/create" style={{textDecoration:"none",color:"black"}}>
       <div id='L-box' onClick={()=>setBtnActive("#explore")} className={btnActive === "#explore" ? "active" : ""}>
         <PiCookingPot
           className='margin'/>
          <span style={{ marginLeft: '8px' }}>Create</span>
       </div>
+
       </Link>
       <Link to="/profile" style={{textDecoration:"none",color:"black"}}>
       <div id='L-box'  onClick={()=>setBtnActive("#trending")} className={btnActive === "#trending" ? "active" : ""}>
@@ -38,6 +40,7 @@ const Left = ({
       </Link>
 
       <Link to="/saved" style={{textDecoration:"none",color:"black"}}>
+
       <div id='L-box' onClick={()=>setBtnActive("#saved")} className={btnActive === "#saved" ? "active" : ""}>
         <BsBookmark
          className='margin'/>
