@@ -22,7 +22,6 @@ function App() {
         <Route path='/saved' element={loggedIn ? <PostLayout type={"saved"}/> : <LoginLayout/>} />
          <Route path='*' element={<WrongPageLayout />} />
       </Routes>
-    <div>
     </div>
   );
 }
