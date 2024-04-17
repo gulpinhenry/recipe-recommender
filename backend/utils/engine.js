@@ -11,9 +11,11 @@ async function test_engine() {
   console.log(completion.choices[0]);
 }
 
-async function get_recipe(ingredients, dietaryPreferences, allergies, existingRecipes = []) {
-    const allergyText = allergies.length > 0 ? allergies.join(', ') : 'none';
-    const promptMessage = `I have the following ingredients: ${ingredients.join(', ')}. I am looking for a recipe that is ${dietaryPreferences}. However, I am allergic to ${allergyText}, so the recipe cannot have these ingredients. Can you suggest a recipe? Please output it in the following format: Ingredients: 100 g of Macaroni, 50 g of cheese, 20 ml of milk \n Recipe: boil macaroni, add cheese and milk, simmer \n Estimated Time: 20 min \n Total Calories: 500`;
+async function get_recipe(ingredients, tastePreferences, allergies, existingRecipes = []) {
+    const allergyText = allergies != null && allergies.length > 0 ? allergies.join(', ') : 'none';
+    const promptMessage = `I have the following ingredients: ${ingredients.join(', ')}. I am looking for a recipe that is ${tastePreferences}.
+     However, I am allergic to ${allergyText}, so the recipe cannot have these ingredients. Can you suggest a recipe? Please output it in the 
+     following JSON format: name: String, ingredients: [String], instructions: String, calories: Number, foodCategories: [String].`;
 
     try {
         const completion = await openai.chat.completions.create({

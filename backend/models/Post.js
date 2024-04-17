@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const postSchema = new mongoose.Schema({
   caption: {
     type: String,
@@ -23,6 +24,26 @@ const postSchema = new mongoose.Schema({
 }, {
   timestamps: true, // Automatically adds createdAt and updatedAt timestamps
 });
+
+postSchema.methods.getAvgScore = async function(){
+  const post = this;
+  const len = post.ratings.length;
+  let sum = 0;
+  if (len <= 0){
+    return 0;
+  }
+  else{
+    await post.populate('ratings')
+    for (let i = 0; i < len; i++) {
+      sum += post.ratings[i].score;
+    }
+  }
+  return sum/len;
+}
+
+postSchema.virtual('Score').get(function(){
+  return this.getAvgScore();
+})
 
 const Post = mongoose.model('Post', postSchema);
 

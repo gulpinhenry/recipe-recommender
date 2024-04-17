@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     type: [String],
     default: [],
   },
-  dietAllergy: {
+  allergy: {
     type: [String],
     default: [],
   },
