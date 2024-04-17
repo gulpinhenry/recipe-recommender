@@ -16,7 +16,7 @@ function App() {
   return (
     <div className='App'>
       <Routes>
-         <Route path='/home' element={loggedIn ? <MainLayout /> : <LoginLayout />} />
+         <Route path='/' element={loggedIn ? <MainLayout /> : <LoginLayout />} />
         <Route path='/create' element={loggedIn ? <PostLayout type={"create"}/> : <LoginLayout/>} />
         <Route path='/profile' element={loggedIn ? <PostLayout type={"profile"}/> : <LoginLayout/>} />
         <Route path='/saved' element={loggedIn ? <PostLayout type={"saved"}/> : <LoginLayout/>} />

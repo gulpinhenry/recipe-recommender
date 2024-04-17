@@ -15,7 +15,7 @@ const Left = ({
 
   return (
     <div className="L-features">
-      <Link to="/home" style={{textDecoration:"none",color:"black"}}>
+      <Link to="/" style={{textDecoration:"none",color:"black"}}>
         <div onClick={()=>setBtnActive("#")} id='L-box' className={btnActive === "#" ? "active" : ""} >
           <AiOutlineHome className='margin'/>
           <span style={{ marginLeft: '8px' }}>Browse</span>

@@ -16,7 +16,7 @@ const Nav = ({search,setSearch,setShowMenu,profileImg}) => {
   return (
     <nav>
         <div className="n-logo">
-            <Link to="/home" className='logo' style={{color:"black",textDecoration:"none"}}>
+            <Link to="/" className='logo' style={{color:"black",textDecoration:"none"}}>
               <h1>Fork <span>folio</span></h1>
             </Link>
         </div>
@@ -35,7 +35,7 @@ const Nav = ({search,setSearch,setShowMenu,profileImg}) => {
       </div>
 
       <div className="social-icons">
-      <Link to="/home" style={{textDecoration:"none",display:"flex",alignItems:"center",color:"white"}}>
+      <Link to="/" style={{textDecoration:"none",display:"flex",alignItems:"center",color:"white"}}>
         <AiOutlineHome className='nav-icons'/>
       </Link>
 
