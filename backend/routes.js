@@ -7,6 +7,28 @@ const Recipe = require('./models/Recipe')
 const User = require('./models/User');
 const { get_recipe} = require('./utils/engine');
 
+// GET user by username
+router.get('/user/username/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+    res.status(200).json({
+      success: true,
+      data: user
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+});
+
 /**
  * 
  * Logs in a user.
@@ -304,67 +326,38 @@ router.post('/rating/create', async (req, res) => {
 
 
 
+// POST user settings (only update the fields that are provided)
+// IMPORTANT this will overwrite the user's allergies and tastePreferences, so be sure to include all of them, not just edited ones
+// This makes sure user is able to delete allergies or tastePreferences if they want
+router.post('/user/settings', async (req, res) => {
+  try {
+    const { username, allergy, tastePreferences } = req.body;
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+    if (allergy) {
+      user.allergy = allergy;
+    }
+    if (tastePreferences) {
+      user.tastePreferences = tastePreferences;
+    }
+    await user.save();
+    res.status(200).json({
+      success: true,
+      message: 'User settings updated successfully',
+      data: user
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+});
 
-
-// TODO: POST for user settings
-// router.get('/getUserDietAllergies/:id', async (req, res) => {
-//   try {
-//       const dietAllergies = await getUserDietAllergies(req.params.id);
-//       res.json(dietAllergies);
-//   } catch (error) {
-//       res.status(500).json({ error: error.message });
-//   }
-// });
-
-// router.get('/getPostBefore', async (req, res) => {
-//   try {
-//       // Convert the time string to a Date object from the request query
-//       const time = new Date(req.query.time);
-
-//       // Find posts that were created before the specified time
-//       const posts = await Post.find({
-//           createdAt: { $lt: time }
-//       })
-//       .sort({ createdAt: -1 })
-//       .limit(3)
-//       .populate({
-//           path: 'recipe',  // Return all fields for the recipe
-//       })
-//       .populate({
-//           path: 'ratings',
-//           populate: {
-//               path: 'user',
-//               model: 'User',
-//               select: '_id username'  // Selecting only the username for efficiency
-//           }
-//       })
-//       .exec();
-
-//       // Map posts to a new structure, including async score calculation and timestamps
-//       const processedPosts = await Promise.all(posts.map(async post => ({
-//           postId: post._id,
-//           recipe: post.recipe,
-//           caption: post.caption,
-//           Score: await post.score,  
-//           createdAt: post.createdAt,
-//           updatedAt: post.updatedAt,
-//           ratings: post.ratings.map(rating => ({
-//               userId: rating.user ? rating.user._id : null,
-//               username: rating.user ? rating.user.username : 'Unknown',
-//               score: rating.score,
-//               comment: rating.comment,
-//               createdAt: rating.createdAt,
-//               updatedAt: rating.updatedAt
-//           }))
-//       })));
-
-//       // Send the processed posts back as the response
-//       res.json(processedPosts);
-//   } catch (error) {
-//       console.error('Error fetching posts:', error);
-//       res.status(500).json({ error: error.message });
-//   }
-// });
 
 module.exports = router;
 
