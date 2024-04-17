@@ -6,6 +6,7 @@ const recipeSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+    unique: true, // remove this later
     trim: true, // Removes whitespace from the beginning and end
   },
   ingredients: [{

@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
-const Rating = require('./Rating');
-const Recipe = require('./Recipe');
-const User = require('./User');
+
 
 const postSchema = new mongoose.Schema({
   caption: {

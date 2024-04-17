@@ -63,11 +63,13 @@ router.post('/user/create', async (req, res) => {
   }
 });
 
-// Generate recipe with user data (pass in dietAllergy, tastePreferences, etc.)
+// Generate recipe with username and ingredients
 router.get('/recipe/generate', async (req, res) => {
   try {
-    const { user } = req.body;
-    const recipes = get_recipe(user.dietAllergy, user.tastePreferences, user.dietAllergy);
+    const { ingredients, username } = req.body;
+    // Find user recipes used from mongodb find by username
+    const curUser = await User.findOne({ username });
+    const recipes = await get_recipe(ingredients, curUser.tastePreferences, curUser.allergies, curUser.recipesUsed);
     res.status(200).json({
       success: true,
       data: recipes
@@ -135,6 +137,7 @@ router.get('/post/:id', async (req, res) => {
     });
   }
 });
+
 // TODO: get Posts by User
 // Get Posts by User
 router.get('/post/user/:id', async (req, res) => {
@@ -151,10 +154,23 @@ router.get('/post/user/:id', async (req, res) => {
     });
   }
 });
-// Get Recent Posts TODO: update this to n recent posts
-router.get('/post/recent', async (req, res) => {
+
+// Get Recent Posts - Returns 'n' recent posts
+router.get('/post/recent/:n', async (req, res) => {
   try {
-    const posts = await Post.find().sort({ createdAt: -1 }).limit(5).populate('user').populate('recipe').populate('ratings');
+    const n = parseInt(req.params.n); // Convert the parameter to an integer
+
+    // Validate the parameter to ensure it's a positive integer
+    if (isNaN(n) || n < 1) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid number of posts requested."
+      });
+    }
+
+    // Fetch the latest 'n' posts, sorting by creation date in descending order
+    const posts = await Post.find().sort({ createdAt: -1 }).limit(n).populate('user').populate('recipe').populate('ratings');
+
     res.status(200).json({
       success: true,
       data: posts
@@ -165,19 +181,29 @@ router.get('/post/recent', async (req, res) => {
     });
   }
 });
+
+
 // Create Post
 router.post('/post/create', async (req, res) => {
   try {
-    const { caption, user, recipe } = req.body;  // Assuming 'recipe' is optional based on your schema.
+    const { caption, username, recipename } = req.body; 
 
     // Ensure the user ID is provided (User existence check could also be added here if necessary)
+    const user = await User.findOne({ username })
     if (!user) {
       return res.status(400).json({
         success: false,
         message: "User ID must be provided"
       });
     }
-
+    // get recipe by name then add to post
+    const recipe = await Recipe.findOne({ name: recipename })
+    if (!recipe) {
+      return res.status(404).json({
+        success: false,
+        message: 'Recipe not found'
+      });
+    }
     const postData = { caption, user, recipe };
     const post = new Post(postData);
     await post.save();
@@ -186,56 +212,6 @@ router.post('/post/create', async (req, res) => {
       success: true,
       message: 'Post created successfully',
       data: post
-    });
-  } catch (error) {
-    res.status(500).json({
-      error: error.message
-    });
-  }
-});
-
-// Create Rating
-router.post('/rating/create', async (req, res) => {
-  try {
-    // Extract rating data from the request body
-    const { user, recipe, post, score, comment } = req.body;
-
-    // Validate that required entities are provided
-    if (!user || !recipe || !post) {
-      return res.status(400).json({
-        success: false,
-        message: "Missing required fields (user, recipe, or post)."
-      });
-    }
-
-    // Check score is within the acceptable range
-    if (score < 1 || score > 5 || !Number.isInteger(score)) {
-      return res.status(400).json({
-        success: false,
-        message: "Score must be an integer between 1 and 5."
-      });
-    }
-
-    // Construct a new rating object with the provided data
-    const ratingData = {
-      user,
-      recipe,
-      post,
-      score,
-      comment
-    };
-    const rating = new Rating(ratingData);
-
-    // Save the new rating to the database
-    await rating.save();
-
-    // Optional: Update referenced post and recipe with new rating ID
-    // Assuming that `Rating` schema's pre-save middleware handles this
-
-    res.status(201).json({
-      success: true,
-      message: 'Rating created successfully',
-      data: rating
     });
   } catch (error) {
     res.status(500).json({
@@ -274,6 +250,60 @@ router.delete('/post/delete/:id', async (req, res) => {
     });
   }
 });
+
+// create rating
+router.post('/rating/create', async (req, res) => {
+  try {
+    const { username, recipename, post_id, score, comment } = req.body;
+
+    // Example of resolving entities (the actual implementation would likely be more complex)
+    const user = await User.findOne({ username: username });
+    const recipe = await Recipe.findOne({ name: recipename });
+    const post = await Post.findOne({ _id: post_id });
+
+    // Validate that required entities are provided
+    if (!user || !recipe || !post) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required fields (user, recipe, or post)."
+      });
+    }
+
+    // Check score is within the acceptable range
+    if (score < 1 || score > 5 || !Number.isInteger(score)) {
+      return res.status(400).json({
+        success: false,
+        message: "Score must be an integer between 1 and 5."
+      });
+    }
+
+    // Construct a new rating object with the provided data
+    const ratingData = {
+      user,
+      recipe,
+      post,
+      score,
+      comment
+    };
+    const rating = new Rating(ratingData);
+
+    // Save the new rating to the database
+    await rating.save();
+
+    res.status(201).json({
+      success: true,
+      message: 'Rating created successfully',
+      data: rating
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+});
+
+
+
 
 
 // TODO: POST for user settings
