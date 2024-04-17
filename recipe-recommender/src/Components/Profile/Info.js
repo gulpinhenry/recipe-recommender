@@ -22,16 +22,12 @@ const Info = ({userPostData,
               userName,
               setUserName}) => {
 
+  const logUserOut =()=>{
+    localStorage.setItem("loggedIn", false);
+    window.location.href = '/';
+    alert("You are now logged out.");
+  }
 
-  const [coverImg,setCoverImg] =useState(Info3)
-
-  const importProfile=useRef()
-  const importCover =useRef()
-
-  const [openEdit,setOpenEdit] =useState(false)
-
-  const [countryName,setCountryName]= useState("")
-  const [jobName,setJobName]= useState("")
   const modelDetails = {
     ModelName: "John Snow",
     ModelCountryName: "Japan",
@@ -46,21 +42,17 @@ const Info = ({userPostData,
         <div className="info-cover">
             <img src={Info3} alt="" />
             <img src={profileImg} alt="" />
-            <div className='coverDiv'><IoCameraOutline className='coverSvg' onClick={()=>importCover.current.click()}/></div>
-            <div className='profileDiv'><IoCameraOutline className='profileSvg' onClick={()=>importProfile.current.click()}/></div>
+            <div className='coverDiv'><IoCameraOutline className='coverSvg'/></div>
+            <div className='profileDiv'><IoCameraOutline className='profileSvg'/></div>
         </div>
 
 
 
         <input type="file"
-        ref={importProfile}
-        // onChange={handleFile1}
         style={{display:"none"}}
         />
 
         <input type="file"
-        ref={importCover}
-        // onChange={handleFile2}
         style={{display:"none"}}
         />
 
@@ -71,23 +63,18 @@ const Info = ({userPostData,
             <h1>{modelDetails.ModelName}</h1>
             <p>{modelDetails.ModelUserName}</p>
 
-            <Link to="/" className='logout'>
+            {/* <Link to="/home" className='logout'>
               <BiLogOut />Logout
-            </Link>
+            </Link> */}
+            <button className="logout" onClick={logUserOut}>
+            <BiLogOut /> Logout
+            </button>
 
-            <button onClick={()=>setOpenEdit(true)}><LiaEdit />Edit Profile</button>
+            <button><LiaEdit />Edit Profile</button>
             <ModelProfile
             name={name}
             setName={setName}
             userName={userName}
-            setUserName={setUserName}
-            countryName={countryName}
-            setCountryName={setCountryName}
-            jobName={jobName}
-            setJobName={setJobName}
-            // handleModel={handleModel}
-            openEdit={openEdit}
-            setOpenEdit={setOpenEdit}
             />
 
 
