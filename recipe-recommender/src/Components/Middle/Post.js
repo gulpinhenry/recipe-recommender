@@ -27,7 +27,7 @@ import img3 from  "../../Assets/middle_static/img-4.jpg"
 
 import Profile from "../../Assets/profile1.jpg"
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Comments from '../Comments/Comments';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
@@ -36,33 +36,7 @@ import { Link } from 'react-router-dom';
 
 const Post = ({post,posts,setPosts,setFriendsProfile,images}) => {
 
-  const [comments,setComments] =useState([
-    {
-        id:1,
-        profilePic:img1,
-        likes:23,
-        username:"Violet",
-        time:"3 Hours Ago",
-        comment:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse asperiores debitis saepe itaque, eligendi quasi laboriosam vitae voluptatem animi maiores voluptatibus."
-    },
-    {
-        id:2,
-        profilePic:img2,
-        likes:5,
-        username:"Brandon",
-        time:"1 Hour Ago",
-        comment:"Lorem ipsum dolor sit amet consectetur adipisicing elit."
-    },
-    {
-        id:3,
-        profilePic:img3,
-        likes:50,
-        username:"Lilly",
-        time:"30 Mins Ago",
-        comment:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse asperiores debitis saepe itaque, eligendi quasi"
-    }
-])
-
+  const [comments,setComments] =useState(false)
 
 
   const [like,setLike] =useState(post.like)
@@ -83,34 +57,92 @@ const Post = ({post,posts,setPosts,setFriendsProfile,images}) => {
   const [showDelete,setShowDelete] = useState(false)
   const [showComment,setShowComment] = useState(false)
 
-const handleDelete=(id)=>{
-  const deleteFilter =posts.filter(val=> val.id !== id)
-    setPosts(deleteFilter)
-    setShowDelete(false)
+  const handleDelete = async (id) => {
+    // Confirm before deleting
+    if (window.confirm('Are you sure you want to delete this post?')) {
+      try {
+        console.log(id)
+        const response = await fetch(`/api/post/delete/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            // Assuming you may need to pass some kind of authorization token
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+  
+        setShowDelete(false);
+        
+        // Optionally, display a message
+        alert('Post deleted successfully.');
+  
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to delete the post.');
+      }
+    }
   }
+  
 
   const [commentInput,setCommentInput] =useState("")
 
-  const handleCommentInput=(e)=>{
-     e.preventDefault()
+  const handleCommentInput = async (e) => {
+    e.preventDefault();
+  
+    // Assuming you have the score input in your form
+    const score = document.getElementById('scoreInput').value;
+  
+    // Retrieving the username from localStorage
+    const username = localStorage.getItem('username');
+  
+    // Collecting the necessary data
+    const data = {
+      username: username,
+      recipename: post.name,
+      post_id: post.id,
+      score: parseInt(score, 5),
+      comment: commentInput
+    };
+    console.log(data)
+    // Posting the data to the API endpoint
+    try {
+      if (data.comment === "") {
+        alert('Please enter a comment');
+        return;
+      }
+      if (data.score < 1 || data.score > 5) {
+        alert('Please enter a score between 1 and 5');
+        return;
+      }
 
-    const id=comments.length ? comments[comments.length -1].id +1 : 1
-    const profilePic =Profile
-    const username="Vijay"
-    const comment =commentInput
-    const time= moment.utc(new Date(), 'yyyy/MM/dd kk:mm:ss').local().startOf('seconds').fromNow()
-
-    const commentObj ={
-      id:id,
-      profilePic:profilePic,
-      likes:0,
-      username:username,
-      comment:comment,
-      time:time
+      const response = await fetch('api/rating/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const result = await response.json();
+      console.log('Success:', result);
+  
+      // Additional logic to handle after successful posting
+      // e.g., clear form, update UI, etc.
+      setCommentInput("");
+      // Optionally reload comments or handle state update
+      window.alert('Comment posted successfully');
+      window.location.reload();
+    } catch (error) {
+      console.error('Error:', error);
     }
-    const insert =[...comments,commentObj]
-    setComments(insert)
-    setCommentInput("")
   }
 
    const handleFriendsId=(id)=>{
@@ -120,6 +152,35 @@ const handleDelete=(id)=>{
 
    const [socialIcons,setSocialIcons] = useState(false)
 
+   const addToMyRecipeList = async (recipeId) => {
+    const username = localStorage.getItem('username');
+    const data = {
+      username: username,
+      recipe_id: recipeId
+    };
+  
+    try {
+      console.log(data)
+      const response = await fetch('/api/recipe/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}` // Assuming you use a Bearer token for authorization
+        },
+        body: JSON.stringify(data)
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const result = await response.json();
+      alert('Recipe added to your list successfully!');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to add recipe to your list.');
+    }
+  };
 
 
 
@@ -137,12 +198,14 @@ const handleDelete=(id)=>{
         </div>
         </Link>
          <div className='delete'>
-         {showDelete && (<div className="options">
-            <button><PiSmileySad />Not Interested in this post</button>
+          {/* check if post's username is equal to localstorage username */}
+
+         {showDelete && post.username === localStorage.getItem("username") && (<div className="options">
+            {/* <button><PiSmileySad />Not Interested in this post</button>
             <button><IoVolumeMuteOutline />Mute this user</button>
-            <button><MdBlockFlipped />Block this user</button>
+            <button><MdBlockFlipped />Block this user</button> */}
             <button onClick={()=>handleDelete(post.id)}><AiOutlineDelete />Delete</button>
-            <button><MdReportGmailerrorred />Report post</button>
+            {/* <button><MdReportGmailerrorred />Report post</button> */}
          </div>
 
          )}
@@ -150,12 +213,17 @@ const handleDelete=(id)=>{
          </div>
        </div>
 
-        <p className='body'>{
-        (post.body).length <=300 ?
-        post.body : `${(post.body).slice(0,300)}...`
-        }</p>
+       <p className='body'>
+          {post.name}  Score: {typeof post.score === 'object' ? 'No score available' : post.score}<br></br>
+          Ingredients: {post.ingredients} <br></br>
+          Categories: {post.categories} <br></br>
+          Calories: {post.calories} <br></br>
+          Instructions: {post.instructions} <br></br>
+          <br></br>
+          {post.caption}
+        </p>
 
-       {post.img && (<img src={post.img} alt="" className="post-img" />)}
+       {/* {post.img && (<img src={post.img} alt="" className="post-img" />)} */}
 
 
 
@@ -168,6 +236,7 @@ const handleDelete=(id)=>{
           >
               {filledLike}
           </p>
+          
 
           <MessageRoundedIcon
             onClick= {()=>setShowComment(!showComment)}
@@ -219,15 +288,19 @@ const handleDelete=(id)=>{
                 </a>
            </div>
           )}
+          {localStorage.getItem('username') !== post.username && (
+            <button onClick={() => addToMyRecipeList(post.recipeid)} className="add-to-recipe-btn">
+              Add to My Recipe List
+            </button>
+          )}
         </div>
 
 
         <div className="like-comment-details">
-          <span className='post-like'>{like} people like it,</span>
-          <span className='post-comment'>{comments.length} comments</span>
+          <span className='post-comment'>{post.ratings == null ? 0 :post.ratings.length} rating(s)</span>
         </div>
 
-       {showComment && (<div className="commentSection">
+       {showComment && post.ratings != null && (<div className="commentSection">
         <form onSubmit={handleCommentInput}>
           <div className="cmtGroup">
               <SentimentSatisfiedRoundedIcon className='emoji'
@@ -241,20 +314,21 @@ const handleDelete=(id)=>{
               onChange={(e)=>setCommentInput(e.target.value)}
               value={commentInput}
                />
+               {/* add another input for the score */}
+               <input type="number" id="scoreInput" required placeholder='Score (1-5)' />
 
               <button type='submit'><SendRoundedIcon className='send' /></button>
 
           </div>
         </form>
 
-        <div className="sticky">
-          {comments.map((cmt)=>(
-            <Comments
-            className="classComment"
-            cmt={cmt}
-            key={cmt.id}
-            />
-          ))}
+          <div className="sticky">
+            {post.ratings.map(comment => (
+              <Comments 
+                key={comment.id}
+                cmt={comment}
+              />
+            ))}
           </div>
         </div>
         )}

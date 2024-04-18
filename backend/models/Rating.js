@@ -34,18 +34,11 @@ const ratingSchema = new mongoose.Schema({
   }
 }, {
   timestamps: true, // Adds createdAt and updatedAt timestamps
+  toJSON: { virtuals: true },  // Include virtuals when document is converted to JSON
+  toObject: { virtuals: true }
 });
 
-ratingSchema.pre('save', async function (next) {
-  const recipe = await Recipe.findById(this.recipe);
-  await recipe.ratings.push(this._id);
 
-  const post = await Post.findById(this.post);
-  await post.ratings.push(this._id);
-
-
-  next()
-})
 
 const Rating = mongoose.model('Rating', ratingSchema);
 

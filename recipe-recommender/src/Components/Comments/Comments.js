@@ -4,26 +4,27 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 
 
-const Comments = ({cmt}) => {
-    const [booleonLike,setBooleonLike] =useState(false)
-    const [likeCount,setLikeCount] =useState(cmt.likes)
+const Comments = ( {cmt}) => {
+    // const [booleonLike,setBooleonLike] =useState(false)
+    // const [likeCount,setLikeCount] =useState(cmt.likes)
 
   return (
     <div className="overAllCommentList">
         <div className="commentList">
             <div className='commentList1'>
                 <div className="commentHead">
-                    <div><img src={cmt.profilePic} /></div>
-                    <p><span>{cmt.username}</span>{cmt.comment}</p>
+                    {/* <div><img src={cmt.profilePic} /></div> */}
+                    <p></p>
+                    <p><span>{cmt.user}</span>{cmt.comment}<span>{cmt.score}</span></p> 
                 </div>
 
                 <div className="commentFooter">
-                    <p>{cmt.time}</p>
-                    <h4>{booleonLike ? likeCount +1 : likeCount} likes</h4>
+                    <p>{cmt.datetime}</p>
+                    {/* <h4>{booleonLike ? likeCount +1 : likeCount} likes</h4> */}
                 </div>
             </div>
 
-        <div className="commentList2">
+        {/* <div className="commentList2">
             <p
             className='cp'
             onClick={()=>setBooleonLike(!booleonLike)}
@@ -31,7 +32,7 @@ const Comments = ({cmt}) => {
             >
                 {booleonLike ? <FavoriteRoundedIcon /> : <FavoriteBorderOutlinedIcon />}
             </p>
-        </div>
+        </div> */}
     </div>
     </div>
 

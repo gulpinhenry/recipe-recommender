@@ -13,6 +13,7 @@ async function test_engine() {
 
 async function get_recipe(ingredients, tastePreferences, allergies, existingRecipes = []) {
     const allergyText = allergies != null && allergies.length > 0 ? allergies.join(', ') : 'none';
+    const existingRecipesText = existingRecipes != null && existingRecipes.length > 0 ? existingRecipes.join(', ') : 'none';
     const promptMessage = `I have the following ingredients: ${ingredients.join(', ')}. I am looking for a recipe that is ${tastePreferences}.
      However, I am allergic to ${allergyText}, so the recipe cannot have these ingredients. Can you suggest a recipe? Please output it in the 
      following JSON format: name: String, ingredients: [String], instructions: String, calories: Number, foodCategories: [String].`;
