@@ -3,12 +3,11 @@ import Feedposts from './Feedposts'
 import "../Middle/Homepage.css"
 
 
-const Homepage = ({posts,setPosts,setFriendsProfile,images}) => {
+const Homepage = ({posts,setPosts,setFriendsProfile}) => {
   return (
     <main className='homepage'>
 
         {posts.length ? <Feedposts
-                        images={images}
                         posts={posts}
                         setPosts={setPosts}
                         setFriendsProfile={setFriendsProfile}

@@ -24,24 +24,25 @@ const recipeSchema = new mongoose.Schema({
   foodCategories: [{
     type: String,
     default: null, // Defaults to null if not provided
-  }],
-  ratings: [[{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Rating', // References the Rating model
-  }]]
+  }]
 }, {
   timestamps: true, // Automatically adds createdAt and updatedAt timestamps
+  toJSON: { virtuals: true },  // Include virtuals when document is converted to JSON
+  toObject: { virtuals: true }
 });
 
 recipeSchema.methods.getAvgScore = async function(){
   const recipe = this;
+  if (!recipe.ratings) {
+    return 0;
+  }
   const len = recipe.ratings.length;
   let sum = 0;
   if (len <= 0){
     return 0;
   }
   else{
-    await recipe.populate('ratings')
+    await recipe.populate('GlobalRatings')
     for (let i = 0; i < len; i++) {
       sum += recipe.ratings[i].score;
     }
@@ -53,6 +54,14 @@ recipeSchema.methods.getAvgScore = async function(){
 recipeSchema.virtual('Score').get(function(){
   return this.getAvgScore();
 })
+
+recipeSchema.virtual('GlobalRatings', {
+  ref: 'Rating',
+  localField: '_id',
+  foreignField: 'recipe',
+  justOne: false
+});
+
 
 const Recipe = mongoose.model('Recipe', recipeSchema);
 

@@ -1,12 +1,11 @@
 import React from 'react'
 import Post from './Post'
 
-const Feedposts = ({posts,setPosts,setFriendsProfile,images}) => {
+const Feedposts = ({posts,setPosts,setFriendsProfile}) => {
   return (
     <div className='feedposts'>
         {posts.map((post)=>(
             <Post
-            images={images}
             posts={posts}
             post ={post}
             setPosts={setPosts}

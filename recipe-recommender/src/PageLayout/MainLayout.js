@@ -1,78 +1,62 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./MainLayout.css";
 import Left from "../Components/Left/Left";
 import Right from "../Components/Right/Right";
 import Nav from "../Components/Navigation/Nav";
 import Middle from "../Components/Middle/Middle";
+import moment from "moment";
 
-import img1 from "../Assets/Post Images/img1.jpg";
-import img2 from "../Assets/Post Images/img2.jpg";
-import img3 from "../Assets/Post Images/img3.jpg";
+const LandingPage = () => {
+  const [posts, setPosts] = useState([]);
 
-import DPimg1 from "../Assets/DP/img1.jpg";
-import DPimg2 from "../Assets/DP/img2.jpg";
-import DPimg3 from "../Assets/DP/img3.jpg";
+  useEffect(() => {
+    fetch('/api/post/recent/100')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
 
-import Cover1 from "../Assets/Friends-Cover/cover-1.jpg";
-import Cover2 from "../Assets/Friends-Cover/cover-2.jpg";
-import Cover3 from "../Assets/Friends-Cover/cover-3.jpg";
+        const formattedPosts = data.data.map(post => ({
+          id: post._id,
+          username: post.user.username,
+          profilepicture: "URL/to/profile/picture", // Adjust this as needed
+          img: "URL/to/post/image", // Adjust this as needed
+          datetime: moment(post.createdAt).fromNow(),
+          recipeid: post.recipe._id,
+          name: post.recipe.name,
+          ingredients: post.recipe.ingredients.join(', '),
+          categories: post.recipe.foodCategories.join(', '),
+          calories: post.recipe.calories,
+          // instructions: (post.recipe.instructions.split('.').filter(step => step.trim().length > 0)).map((step, index) => `${index + 1}. ${step.trim()}`).join('\n'),
+          instructions: post.recipe.instructions,
+          score: post.recipe.Score ? post.recipe.Score : 0,
+          caption: post.caption,
 
-import moment from "moment/moment";
+          like: 0, // Default value, update if backend includes this info
+          comment: 0, // Default value, update if backend includes this info
+          unFilledLike: true, // Default or based on user interaction
+          coverpicture: "URL/to/cover/picture", // Adjust this as needed
+          userid: `@${post.user.username}`,
+          ModelCountryName: "Country", // Placeholder or add to backend
+          ModelJobName: "Job Title", // Placeholder or add to backend
+          ModelJoinedDate: `Joined in ${moment(post.user.createdAt).format('YYYY-MM-DD')}`,
+          followers: 0, // Default or actual data if included in backend
 
-const Landingpage = ({}) => {
-  const posts = [
-    {
-      id: 1,
-      username: "Harry",
-      title: "Spaghetti",
-      profilepicture: DPimg1,
-      img: img1,
-      datetime: moment("20230131", "YYYYMMDD").fromNow(),
-      body: "My 1st Post, Have A Good Day Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro ipsum laborum necessitatibus ex doloragnam ea?",
-      like: 44,
-      comment: 3,
-      unFilledLike: true,
-      coverpicture: Cover1,
-      userid: "@Iamharry",
-      ModelCountryName: "USA",
-      ModelJobName: "Java Developer",
-      ModelJoinedDate: "Joined in 2019-02-28",
-      followers: 1478,
-    },
-    {
-      id: 2,
-      username: "chris dhaniel",
-      profilepicture: DPimg2,
-      img: img2,
-      datetime: moment("20230605", "YYYYMMDD").fromNow(),
-      body: "My 2st Post, Have A Bad Day Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro ipsum laborum necessitatibus ex dolor reiciendis, consequuntur placeat repellat magnam ea?",
-      like: 84,
-      comment: 3,
-      coverpicture: Cover2,
-      userid: "@chris777",
-      ModelCountryName: "Australia",
-      ModelJobName: "Cyber Security",
-      ModelJoinedDate: "Joined in 2018-01-17",
-      followers: 1730,
-    },
-    // {
-    //   id:3,
-    //   username:"April",
-    //   profilepicture:DPimg3,
-    //   img:img3,
-    //   datetime:moment("20230813", "YYYYMMDD").fromNow(),
-    //   body:"My 3st Post, Have A Nice Day Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro ipsum laborum necessitatibus ex dolor reiciendis, consequuntur",
-    //   like: 340,
-    //   comment:76,
-    //   coverpicture:Cover3,
-    //   userid:"@April",
-    //   ModelCountryName:"India",
-    //   ModelJobName:"Python Developer",
-    //   ModelJoinedDate:"Joined in 2022-03-01",
-    //   followers:426
-    // }
-  ];
+          ratings: post.PostRatings.map(rating => ({
+            id: rating._id,
+            score: rating.score,
+            user: rating.user.username,
+            comment: rating.comment,
+            datetime: moment(rating.createdAt).fromNow(),
+          })),
+        }));
+        setPosts(formattedPosts);
+      })
+      .catch(error => console.error('There was an error fetching the posts:', error));
+  }, []);
 
   return (
     <div className="interface">
@@ -86,4 +70,4 @@ const Landingpage = ({}) => {
   );
 };
 
-export default Landingpage;
+export default LandingPage;

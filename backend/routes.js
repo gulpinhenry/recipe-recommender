@@ -124,6 +124,11 @@ router.post('/recipe/create', async (req, res) => {
     // Save the new recipe to the database
     await recipe.save();
 
+    // add to user's recipes used
+    const user = await User.findOne({ username: req.body.username });
+    user.recipesUsed.push(recipe);
+    await user.save();
+
     // Return a success response with the created recipe
     res.status(200).json({
       success: true,
@@ -137,6 +142,33 @@ router.post('/recipe/create', async (req, res) => {
     });
   }
 });
+
+// add recipe to user's recipesUsed
+router.post('/recipe/add', async (req, res) => {
+  try {
+    const { username, recipe_id } = req.body;
+    const user = await User.findOne({ username });
+    const recipe = await Recipe.findOne({ _id: recipe_id });
+    if (!user || !recipe) {
+      return res.status(404).json({
+        success: false,
+        message: 'User or Recipe not found'
+      });
+    }
+    user.recipesUsed.push(recipe);
+    await user.save();
+    res.status(200).json({
+      success: true,
+      message: 'Recipe added to user successfully',
+      data: user
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+});
+
 
 // Get Post by ID
 router.get('/post/:id', async (req, res) => {
@@ -190,8 +222,24 @@ router.get('/post/recent/:n', async (req, res) => {
       });
     }
 
-    // Fetch the latest 'n' posts, sorting by creation date in descending order
-    const posts = await Post.find().sort({ createdAt: -1 }).limit(n).populate('user').populate('recipe').populate('ratings');
+
+    // Fetch the latest 'n' posts, sorting by creation date in descending order, populate GlobalRatings and PostRating virtuals as well
+    const posts = await Post.find().sort({ createdAt: -1 }).limit(n)
+    .populate('user')
+    .populate('recipe')
+    .populate({
+      path: 'GlobalRatings',
+      populate: {
+        path: 'recipe'
+      }
+    })
+    .populate({
+      path: 'PostRatings',
+      populate: {
+        path: 'user'
+      }
+    });
+    
 
     res.status(200).json({
       success: true,
@@ -273,6 +321,22 @@ router.delete('/post/delete/:id', async (req, res) => {
   }
 });
 
+// get rating by post id
+router.get('/rating/post/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const ratings = await Rating.find({ post: id }).populate('user').populate('recipe').populate('post');
+    res.status(200).json({
+      success: true,
+      data: ratings
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+});
+
 // create rating
 router.post('/rating/create', async (req, res) => {
   try {
@@ -280,7 +344,9 @@ router.post('/rating/create', async (req, res) => {
 
     // Example of resolving entities (the actual implementation would likely be more complex)
     const user = await User.findOne({ username: username });
+    // get recipe to add to rating
     const recipe = await Recipe.findOne({ name: recipename });
+    // get post to add to rating
     const post = await Post.findOne({ _id: post_id });
 
     // Validate that required entities are provided
