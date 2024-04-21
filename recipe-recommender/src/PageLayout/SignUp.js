@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import { FiMail } from "react-icons/fi";
-import { RiLockPasswordLine } from "react-icons/ri";
-import "../PageLayout/LoginLayout.css";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react'
+import "../PageLayout/LoginLayout.css"
+import {AiOutlineUser} from "react-icons/ai"
+import {FiMail} from "react-icons/fi"
+import {RiLockPasswordLine} from "react-icons/ri"
+import { Link, useNavigate } from 'react-router-dom'
 
-const LoginLayout = () => {
+const SignUp = () => {
+
   const [showCreateAccount, setShowCreateAccount] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -89,50 +91,54 @@ const LoginLayout = () => {
       });
   };
 
+
   return (
     <div className="container">
-      <div className="container-form">
+    <div className="container-form">
         <form onSubmit={handleSignUp}>
-          {/* <form> */}
-          {/* <h1>Login</h1> */}
-          <p>To continue, please sign in.</p>
-          <div className="inputBox">
-            <FiMail className="mail" />
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
+            <p>Please fill the input below to create a account.</p>
 
-          <div className="inputBox">
-            <RiLockPasswordLine className="password" />
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
+            <div className="inputBox">
+                <AiOutlineUser className='fullName'/>
+                <input
+                     type="text"
+                     value={newUsername}
+                     onChange={(e) => setNewUsername(e.target.value)}
+                 />
+            </div>
 
-          <div className="divBtn">
-            <h2 className="orange_text"></h2>
-            <button onClick={handleLogin} type="submit" className="loginBtn">
-              LOGIN
-            </button>
-          </div>
+            <div className="inputBox">
+                <FiMail className='mail'/>
+                    <input
+                     type="email"
+                     value={email}
+                     onChange={(e) => setEmail(e.target.value)}
+                 />
+            </div>
+            {error.email && <span style={{color:"red",display:"block",marginTop:"5px"}}>{error.email}</span>}
+
+            <div className="inputBox">
+                <RiLockPasswordLine className='password'/>
+                <input
+                     type="password"
+                     value={newPassword}
+                     onChange={(e) => setNewPassword(e.target.value)}
+                />
+            </div>
+
+            <div className='divBtn'>
+                <small className='FG'></small>
+                <button className='loginBtn' onClick={handleCreateAccountSubmit} >SIGN UP</button>
+            </div>
+
         </form>
 
-        <div className="dont">
-          <p>
-            Want to create a account?{" "}
-            <Link to="/signup">
-              <h2 className="orange_text">Sign up here</h2>
-            </Link>
-          </p>
+        <div className='dont'>
+            <p>Already have a account? <Link to="/"><h2 className='orange_text'>Sign in</h2></Link></p>
         </div>
-      </div>
     </div>
-  );
-};
+</div>
+  )
+}
 
-export default LoginLayout;
+export default SignUp
