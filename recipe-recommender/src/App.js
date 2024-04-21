@@ -4,6 +4,8 @@ import MainLayout from './PageLayout/MainLayout';
 import PostLayout from './PageLayout/PostLayout';
 import LoginLayout from './PageLayout/LoginLayout';
 import WrongPageLayout from './PageLayout/WrongPageLayout';
+import SignUp from './PageLayout/SignUp'
+
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -21,6 +23,7 @@ function App() {
         <Route path='/profile' element={loggedIn ? <PostLayout type={"profile"}/> : <LoginLayout/>} />
         <Route path='/saved' element={loggedIn ? <PostLayout type={"saved"}/> : <LoginLayout/>} />
          <Route path='*' element={<WrongPageLayout />} />
+         <Route path='/signup' element={<SignUp />}/>
       </Routes>
     </div>
   );
