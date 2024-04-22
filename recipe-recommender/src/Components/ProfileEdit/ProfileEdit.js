@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for navigation
 import './ProfileEdit.css'; // Ensure you have the Dashboard.css in the correct path
 
-// TagInput Component
 const TagInput = ({ tags, setTags, inputValue, setInputValue }) => {
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
@@ -42,12 +42,20 @@ const TagInput = ({ tags, setTags, inputValue, setInputValue }) => {
   );
 };
 
-// Main Dashboard Component
 function Dashboard() {
   const [tastePreferences, setTastePreferences] = useState([{ id: 'sweet', text: 'Sweet' }]);
   const [allergySettings, setAllergySettings] = useState([{ id: 'nuts', text: 'Nuts' }]);
   const [inputValueTaste, setInputValueTaste] = useState('');
   const [inputValueAllergy, setInputValueAllergy] = useState('');
+
+  const navigate = useNavigate(); // Hook for navigation
+
+  const saveAndBacktrack = () => {
+    // Save logic here (API call or localStorage)
+    console.log('Saving settings:', { tastePreferences, allergySettings });
+    // After saving, navigate back to the profile page
+    navigate('/profile');
+  };
 
   return (
     <div>
@@ -66,6 +74,9 @@ function Dashboard() {
         inputValue={inputValueAllergy}
         setInputValue={setInputValueAllergy}
       />
+
+      <button onClick={() => navigate('/profile')} className="backtrack-button">Return</button>
+      <button onClick={saveAndBacktrack} className="save-button">Save</button>
     </div>
   );
 }
