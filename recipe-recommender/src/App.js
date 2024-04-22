@@ -17,26 +17,13 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={loggedIn ? <MainLayout /> : <LoginLayout />} />
-        <Route
-          path="/signup"
-          element={loggedIn ? <MainLayout /> : <SignUp />}
-        />
-        <Route
-          path="/create"
-          element={loggedIn ? <PostLayout type={"create"} /> : <LoginLayout />}
-        />
-        <Route
-          path="/profile"
-          element={loggedIn ? <PostLayout type={"profile"} /> : <LoginLayout />}
-        />
-        <Route
-          path="/saved"
-          element={loggedIn ? <PostLayout type={"saved"} /> : <LoginLayout />}
-        />
-        <Route path="/home" element={<MainLayout />} />
-        <Route path="*" element={<WrongPageLayout />} />
-        <Route path="/recipe/:id" element={loggedIn ? <PostLayout type={"single"}/> : <LoginLayout />} />
+         <Route path='/' element={loggedIn ? <MainLayout /> : <LoginLayout />} />
+        <Route path='/create' element={loggedIn ? <PostLayout type={"create"}/> : <LoginLayout/>} />
+        <Route path='/profile' element={loggedIn ? <PostLayout type={"profile"}/> : <LoginLayout/>} />
+        <Route path='/saved' element={loggedIn ? <PostLayout type={"saved"}/> : <LoginLayout/>} />
+        <Route path='/profileupdate' element={loggedIn ? <PostLayout type={"profileupdate"}/> : <LoginLayout/>} />
+         <Route path='*' element={<WrongPageLayout />} />
+         <Route path='/signup' element={<SignUp />}/>
       </Routes>
     </div>
   );
