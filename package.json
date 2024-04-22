@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
-        "i": "0.3.7"
+        "i": "0.3.7",
+        "react-tag-input": "^6.9.0"
     }
 }
