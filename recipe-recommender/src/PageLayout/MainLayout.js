@@ -32,7 +32,8 @@ const LandingPage = () => {
           calories: post.recipe.calories,
           // instructions: (post.recipe.instructions.split('.').filter(step => step.trim().length > 0)).map((step, index) => `${index + 1}. ${step.trim()}`).join('\n'),
           instructions: post.recipe.instructions,
-          score: post.recipe.Score ? post.recipe.Score : 0,
+          // Iterate through GlobalRatings and get the average of GlobatRatings.score, and then round to 2 decimals
+          score: post.recipe.GlobalRatings ? (post.recipe.GlobalRatings.reduce((acc, rating) => acc + rating.score, 0) / post.recipe.GlobalRatings.length).toFixed(2) : 0,
           caption: post.caption,
 
           like: 0, // Default value, update if backend includes this info
