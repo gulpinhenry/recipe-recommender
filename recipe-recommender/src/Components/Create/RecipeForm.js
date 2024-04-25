@@ -1,108 +1,201 @@
+import React, { useState } from "react";
 import Category from "./Category.js";
 import Ingredients from "./Ingredients";
-import Procedure from "./Procedure";
-import TimePicker from "./TimePicker";
-import PictureUpload from "./PictureUpload";
 
-import { useState } from "react";
-
-const RecipeForm = ({ props}) => {
+const RecipeForm = ({ handleFormSubmit }) => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
+  const [ingredients, setIngredients] = useState([]);
+  const [instructions, setInstructions] = useState("");
+  const [calories, setCalories] = useState(0);
+  const [foodCategories, setFoodCategories] = useState([]);
+  const [usedRecipes, setUsedRecipes] = useState([]);
+  const [caption, setCaption] = useState(""); 
+  const [loading, setLoading] = useState(false);
 
-  // const { category, ingredients, procedures, cook_time, picture } = useSelector(
-  //   (state) => state.forms
-  // );
+  const generateRecipe = async () => {
+    setLoading(true); // Start loading
+    const username = localStorage.getItem('username');
+    const ingredientNames = ingredients.map(ingredient => ingredient.name);
+    
+    const requestBody = {
+      ingredients: ingredientNames,
+      username,
+      used: []
+    };
 
-  const handleFormSubmit = (e) => {
+    try {
+      const response = await fetch('/api/recipe/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      if (result.success && result.data) {
+        const recipeData = JSON.parse(result.data);
+        setTitle(recipeData.name);
+        setDesc(recipeData.instructions);
+        setIngredients(recipeData.ingredients.map(ing => ({ name: ing, isNew: true })));
+        setInstructions(recipeData.instructions);
+        setCalories(recipeData.calories);
+        setFoodCategories(recipeData.foodCategories);
+        setCaption("");
+      }
+    } catch (error) {
+      console.error('Error generating recipe:', error);
+    } finally {
+      setLoading(false); // End loading
+    }
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const username = localStorage.getItem('username'); // Assume username is stored in localStorage
+    const ingredientNames = ingredients.map(ingredient => ingredient.name);
 
-  //   const formData = new FormData();
+    const recipeBody = {
+      username,
+      name: title,
+      ingredients: ingredientNames,
+      instructions,
+      calories,
+      foodCategories
+    };
 
-  //   formData.append("category.name", category);
-  //   formData.append("picture", picture, picture.name);
-  //   formData.append("title", title);
-  //   formData.append("desc", desc);
-  //   formData.append("cook_time", cook_time);
-  //   formData.append("ingredients", JSON.stringify(ingredients));
-  //   formData.append("procedure", JSON.stringify(procedures));
+    const postBody = {
+      username,
+      recipename: title,
+      caption
+    };
 
-  //   props.handleFormSubmit(formData);
+    try {
+      // Create the recipe
+      console.log('recipeBody:', recipeBody)
+      const recipeResponse = await fetch('/api/recipe/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(recipeBody)
+      });
+
+      if (!recipeResponse.ok) throw new Error('Failed to create recipe');
+
+      // Create the post
+      const postResponse = await fetch('/api/post/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postBody)
+      });
+
+      if (!postResponse.ok) throw new Error('Failed to create post');
+
+      // Redirect to the home page and reload
+      window.location.href = "/"; // Redirect to home page
+
+    } catch (error) {
+      console.error('Error creating recipe or post:', error);
+    }
   };
 
   return (
     <>
-      <div>
-        <div className="md:grid md:grid-cols-3 md:gap-6">
-          <div className="md:col-span-1">
-            <div className="px-4 sm:px-0">
-              <h3 className="p-5 text-lg font-medium leading-6 text-gray-900">
-                Create your recipe and share it to the world!
-              </h3>
-              <p className="px-5 text-sm text-gray-600">
-                "Cooking is like painting or writing a song. Just as there are
-                only so many notes or colors, there are only so many
-                flavors—it’s how you combine them that sets you apart."
-              </p>
-            </div>
-          </div>
-          <div className="mt-5 md:mt-0 md:col-span-2">
-            <form onSubmit={handleFormSubmit}>
-              <div className="shadow sm:rounded-md sm:overflow-hidden">
-                <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
-                  <div>
-                    <h1 className="text-lg leading-6 font-medium text-gray-900">
-                      Title
-                    </h1>
+      <div className="md:grid md:grid-cols-3 md:gap-6">
+        <div className="md:col-span-1">
+          <button onClick={generateRecipe} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" disabled={loading}>
+              {loading ? "Loading..." : "Generate Recipe"}
+          </button>
+        </div>
+        <div className="mt-5 md:mt-0 md:col-span-2">
+          <form onSubmit={handleSubmit}>
+            <div className="shadow sm:rounded-md sm:overflow-hidden">
+              <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
+                <div>
+                  <h1 className="text-lg leading-6 font-medium text-gray-900">Recipe Name</h1>
+                  <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full border border-gray-300 rounded-md"
+                    placeholder="Generated recipe name will appear here"
+                    value={title}
+                    readOnly
+                  />
+                </div>
+                <Ingredients editMode={true} recipe={ingredients} setIngredients={setIngredients} />
+                <div>
+                  <h1 className="text-lg leading-6 font-medium text-gray-900">Instructions</h1>
+                  <textarea
+                    id="instructions"
+                    name="instructions"
+                    rows={5}
+                    className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                    placeholder="Generated instructions will appear here"
+                    value={instructions}
+                    readOnly
+                  />
+                </div>
+                <div>
+                  <h1 className="text-lg leading-6 font-medium text-gray-900">Calories</h1>
+                  <input
+                    type="text"
+                    name="calories"
+                    id="calories"
+                    className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full border border-gray-300 rounded-md"
+                    placeholder="Calories will be shown here"
+                    value={calories}
+                    readOnly
+                  />
+                </div>
+                <div>
+                  <h1 className="text-lg leading-6 font-medium text-gray-900">Food Categories</h1>
+                  <div className="mt-1">
                     <input
                       type="text"
-                      name="title"
-                      id="title"
+                      name="foodCategories"
+                      id="foodCategories"
                       className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full border border-gray-300 rounded-md"
-                      placeholder="Write a title for your recipe. Something catchy ..."
-                      onChange={(e) => setTitle(e.target.value)}
+                      placeholder="Applicable food categories will be listed here"
+                      value={foodCategories.join(', ')}  // Display categories as a comma-separated list
+                      readOnly
                     />
                   </div>
-                  <div>
-                    <h1 className="text-lg leading-6 font-medium text-gray-900">
-                      Description
-                    </h1>
-                    <div className="mt-1">
-                      <textarea
-                        id="desc"
-                        name="desc"
-                        rows={3}
-                        className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
-                        placeholder="Write a short description..."
-                        onChange={(e) => setDesc(e.target.value)}
-                      />
-                    </div>
-                    <p className="mt-2 text-sm text-gray-500">
-                      Write a short and precise description abour your recipe.
-                    </p>
-                  </div>
-                  <Category editMode={false} recipe={null} />
-                  <Ingredients
-                    editMode={false}
-                    recipe={null}
-                  />
-                  <PictureUpload />
                 </div>
-                <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                  <button
-                    type="submit"
-                    className="w-full bg-teal-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-cyan-500"
-                  >
-                    Create Post
-                  </button>
+                <div>
+                  <h1 className="text-lg leading-6 font-medium text-gray-900">Caption</h1>
+                  <textarea
+                    id="caption"
+                    name="caption"
+                    rows={3}
+                    className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                    placeholder="Add a caption for your recipe post"
+                    value={caption}
+                    onChange={(e) => setCaption(e.target.value)}
+                  />
                 </div>
               </div>
-            </form>
-          </div>
+              <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                <button
+                  type="submit"
+                  className="w-full bg-teal-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-cyan-500"
+                >
+                  Create
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </>
   );
-}
+};
 
-export default RecipeForm
+export default RecipeForm;
