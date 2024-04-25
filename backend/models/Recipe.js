@@ -31,36 +31,41 @@ const recipeSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-recipeSchema.methods.getAvgScore = async function(){
-  const recipe = this;
-  if (!recipe.ratings) {
-    return 0;
-  }
-  const len = recipe.ratings.length;
-  let sum = 0;
-  if (len <= 0){
-    return 0;
-  }
-  else{
-    await recipe.populate('GlobalRatings')
-    for (let i = 0; i < len; i++) {
-      sum += recipe.ratings[i].score;
-    }
-  }
-  return sum/len;
-}
-
-
-recipeSchema.virtual('Score').get(function(){
-  return this.getAvgScore();
-})
-
 recipeSchema.virtual('GlobalRatings', {
   ref: 'Rating',
   localField: '_id',
   foreignField: 'recipe',
   justOne: false
 });
+
+
+// recipeSchema.methods.getAvgScore = async function(){
+//   const recipe = this;
+//   console.log(recipe);
+//   if (!recipe.ratings) {
+//     return 0;
+//   }
+//   const len = recipe.ratings.length;
+//   console.log(len);
+//   let sum = 0;
+//   if (len <= 0){
+//     return 0;
+//   }
+//   else{
+//     await recipe.populate('GlobalRatings')
+//     for (let i = 0; i < len; i++) {
+//       sum += recipe.ratings[i].score;
+//     }
+//   }
+//   return sum/len;
+// }
+
+
+// recipeSchema.virtual('Score').get(function(){
+//   return this.getAvgScore();
+// })
+
+
 
 
 const Recipe = mongoose.model('Recipe', recipeSchema);
