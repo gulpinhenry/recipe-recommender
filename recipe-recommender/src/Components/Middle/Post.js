@@ -57,6 +57,15 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
   const [showDelete, setShowDelete] = useState(false);
   const [showComment, setShowComment] = useState(false);
 
+  const getAverageRating = (ratings) => {
+    if (!Array.isArray(ratings) || ratings.length === 0) {
+      return 0;
+    }
+
+    const sum = ratings.reduce((accumulator, current) => accumulator + current.score, 0);
+    return sum / ratings.length;
+  }
+
   const handleDelete = async (id) => {
     // Confirm before deleting
     if (window.confirm("Are you sure you want to delete this post?")) {
@@ -178,8 +187,7 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
       alert("Failed to add recipe to your list.");
     }
   };
-  console.log(post);
-
+  
   return (
     <div className="post">
       <Link to="/FriendsId" style={{ textDecoration: "none" }}>
@@ -237,7 +245,7 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
       <div className="post-foot">
         <div className="post-footer">
           <div className="like-icons">
-            <StarRating currentRating={3} />
+            <StarRating currentRating={getAverageRating(post.ratings)} />
 
             <MessageRoundedIcon
               onClick={() => setShowComment(!showComment)}
