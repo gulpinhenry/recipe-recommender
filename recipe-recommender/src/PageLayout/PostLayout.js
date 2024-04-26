@@ -6,9 +6,9 @@ import Right from "../Components/Right/Right";
 import Nav from "../Components/Navigation/Nav";
 import PostComp from "../Components/PostComp/PostComp";
 
-import img1 from "../Assets/Post Images/img1.jpg";
-import img2 from "../Assets/Post Images/img2.jpg";
-import img3 from "../Assets/Post Images/img3.jpg";
+import img1 from "../Assets/Post_Images/img1.jpg";
+import img2 from "../Assets/Post_Images/img2.jpg";
+import img3 from "../Assets/Post_Images/img3.jpg";
 
 import DPimg1 from "../Assets/DP/img1.jpg";
 import DPimg2 from "../Assets/DP/img2.jpg";

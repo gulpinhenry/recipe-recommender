@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FiMail } from "react-icons/fi";
+import {AiOutlineUser} from "react-icons/ai"
 import { RiLockPasswordLine } from "react-icons/ri";
 import "../PageLayout/LoginLayout.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -39,7 +39,7 @@ const LoginLayout = () => {
       .then((data) => {
         if (data.success) {
           // If login was successful
-          alert(data.message);
+          // alert(data.message);
           localStorage.setItem("loggedIn", true);
           localStorage.setItem("username", data.data.username);
           window.location.href = "/"; // Redirect to home page or dashboard
@@ -53,41 +53,6 @@ const LoginLayout = () => {
       });
   };
 
-  const handleCreateAccount = () => {
-    setShowCreateAccount(true);
-  };
-
-  const handleCreateAccountSubmit = () => {
-    fetch("/api/user/create", {
-      method: "POST",
-      credentials: "include", // Ensure cookies are included
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: newUsername, // Ensure this is defined
-        email: email, // Ensure this is defined
-        password: newPassword, // Ensure this is defined
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          // If account creation was successful
-          alert(data.message);
-          localStorage.setItem("loggedIn", true);
-          localStorage.setItem("username", data.data.username);
-          window.location.href = "/";
-        } else {
-          // If account creation failed
-          alert(`Account creation failed: ${data.error}`);
-          setShowCreateAccount(false);
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
 
   return (
     <div className="container">
@@ -97,10 +62,11 @@ const LoginLayout = () => {
           {/* <h1>Login</h1> */}
           <p>To continue, please sign in.</p>
           <div className="inputBox">
-            <FiMail className="mail" />
+            <AiOutlineUser className="mail" />
             <input
               type="text"
               value={username}
+              placeholder='Username'
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
@@ -110,6 +76,7 @@ const LoginLayout = () => {
             <input
               type="password"
               value={password}
+              placeholder='Password'
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
