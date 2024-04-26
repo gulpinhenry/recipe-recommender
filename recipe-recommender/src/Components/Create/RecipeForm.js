@@ -10,14 +10,14 @@ const RecipeForm = ({ handleFormSubmit }) => {
   const [calories, setCalories] = useState(0);
   const [foodCategories, setFoodCategories] = useState([]);
   const [usedRecipes, setUsedRecipes] = useState([]);
-  const [caption, setCaption] = useState(""); 
+  const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
 
   const generateRecipe = async () => {
     setLoading(true); // Start loading
     const username = localStorage.getItem('username');
     const ingredientNames = ingredients.map(ingredient => ingredient.name);
-    
+
     const requestBody = {
       ingredients: ingredientNames,
       username,
@@ -163,42 +163,6 @@ const RecipeForm = ({ handleFormSubmit }) => {
                       name="foodCategories"
                       id="foodCategories"
                       className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full border border-gray-300 rounded-md"
-                      placeholder="Write a title for your recipe. Something catchy ..."
-                      onChange={(e) => setTitle(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <h1 className="text-lg leading-6 font-medium text-gray-900">
-                      Description
-                    </h1>
-                    <div className="mt-1">
-                      <textarea
-                        id="desc"
-                        name="desc"
-                        rows={3}
-                        className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
-                        placeholder="Write a short description..."
-                        onChange={(e) => setDesc(e.target.value)}
-                      />
-                    </div>
-                    <p className="mt-2 text-sm text-gray-500">
-                      Write a short and precise description abour your recipe.
-                    </p>
-                  </div>
-                  <Category editMode={false} recipe={null} />
-                  <Ingredients
-                    editMode={false}
-                    recipe={null}
-                  />
-                  <PictureUpload />
-                </div>
-                <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                  <button
-                    type="submit"
-                    className="w-full bg-teal-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-cyan-500"
-                  >
-                    Create Post
-                  </button>
                       placeholder="Applicable food categories will be listed here"
                       value={foodCategories.join(', ')}  // Display categories as a comma-separated list
                       readOnly
