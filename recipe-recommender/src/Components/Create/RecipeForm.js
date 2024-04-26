@@ -10,14 +10,14 @@ const RecipeForm = ({ handleFormSubmit }) => {
   const [calories, setCalories] = useState(0);
   const [foodCategories, setFoodCategories] = useState([]);
   const [usedRecipes, setUsedRecipes] = useState([]);
-  const [caption, setCaption] = useState(""); 
+  const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
 
   const generateRecipe = async () => {
     setLoading(true); // Start loading
     const username = localStorage.getItem('username');
     const ingredientNames = ingredients.map(ingredient => ingredient.name);
-    
+
     const requestBody = {
       ingredients: ingredientNames,
       username,

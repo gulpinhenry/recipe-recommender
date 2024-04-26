@@ -1,7 +1,7 @@
 .interface {
   width: 100%;
 }
-/* .home{
+.home{
     width: 100vw;
     min-height: 100vh;
     display: grid;
@@ -10,8 +10,8 @@
     background-color:rgb(240, 242, 245);
     padding: 0px 10px;
     position: relative;
-} */
-.home {
+}
+/* .home {
   width: 100vw;
   min-height: 100vh;
   display: grid;
@@ -20,7 +20,7 @@
   background-color: rgb(240, 242, 245);
   padding: 0px 10px;
   position: relative;
-}
+} */
 @media screen and (max-width: 1024px) {
   .home {
     width: 100%;
