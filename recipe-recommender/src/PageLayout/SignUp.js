@@ -24,41 +24,6 @@ const SignUp = () => {
     e.preventDefault();
     setSubmit(true);
   };
-
-  const handleLogin = () => {
-    fetch("/api/user/login", {
-      method: "POST",
-      credentials: "include", // Ensure cookies are included
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          // If login was successful
-          alert(data.message);
-          localStorage.setItem("loggedIn", true);
-          localStorage.setItem("username", data.data.username);
-          window.location.href = "/"; // Redirect to home page or dashboard
-        } else {
-          // If login failed
-          alert(`Login failed: ${data.error}`);
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
-
-  const handleCreateAccount = () => {
-    setShowCreateAccount(true);
-  };
-
   const handleCreateAccountSubmit = () => {
     fetch("/api/user/create", {
       method: "POST",
@@ -76,7 +41,7 @@ const SignUp = () => {
       .then((data) => {
         if (data.success) {
           // If account creation was successful
-          alert(data.message);
+          // alert(data.message);
           localStorage.setItem("loggedIn", true);
           localStorage.setItem("username", data.data.username);
           window.location.href = "/";
@@ -103,6 +68,7 @@ const SignUp = () => {
                 <input
                      type="text"
                      value={newUsername}
+                     placeholder='Username'
                      onChange={(e) => setNewUsername(e.target.value)}
                  />
             </div>
@@ -112,6 +78,7 @@ const SignUp = () => {
                     <input
                      type="email"
                      value={email}
+                     placeholder='Email'
                      onChange={(e) => setEmail(e.target.value)}
                  />
             </div>
@@ -122,6 +89,7 @@ const SignUp = () => {
                 <input
                      type="password"
                      value={newPassword}
+                     placeholder='Password'
                      onChange={(e) => setNewPassword(e.target.value)}
                 />
             </div>

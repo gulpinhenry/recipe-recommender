@@ -62,7 +62,7 @@
     display: flex;
     justify-content: space-between;
     align-items:center;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 .post-user{
     display:flex;
@@ -133,6 +133,33 @@
     padding: 10px;
     width: 400px;
 }
+
+.post-img-container {
+    position: relative;
+    width: fit-content; /* Adjust based on your requirement */
+  }
+
+  .post-img {
+    display: block;
+    width: 100%; /* This will ensure the image takes the width of the container */
+    height: auto; /* This will keep the image aspect ratio intact */
+  }
+
+  .img-overlay {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* semi-transparent overlay */
+    color: white;
+    width: 100%;
+    text-align: center;
+    backdrop-filter: blur(8px); /* This will blur the background */
+  }
+
+  .img-text {
+    padding: 10px; /* Adjust based on your requirement */
+    font-size: 1.5em; /* Adjust based on your requirement */
+  }
+
 .delete button{
     display:flex;
     width: 100%;
@@ -547,3 +574,14 @@ a:active {
         height: 300px;
     }
 }
+
+.star {
+    cursor: pointer;
+    font-size: 25px; /* Adjust size as necessary */
+    color: transparent; /* Make the fill transparent */
+    text-shadow: 0px 0px 2px orange; /* Gives the outline effect */
+  }
+
+  .star.filled {
+    color: orange; /* Fills the star */
+  }
