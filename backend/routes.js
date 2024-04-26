@@ -86,12 +86,14 @@ router.post('/user/create', async (req, res) => {
 });
 
 // Generate recipe with username and ingredients
-router.get('/recipe/generate', async (req, res) => {
+router.post('/recipe/generate', async (req, res) => {
   try {
-    const { ingredients, username } = req.body;
+    // used is recipes that user has already used and wants to regenerate
+    const { ingredients, username, used } = req.body;
     // Find user recipes used from mongodb find by username
     const curUser = await User.findOne({ username });
-    const recipes = await get_recipe(ingredients, curUser.tastePreferences, curUser.allergies, curUser.recipesUsed);
+    const recipes = await get_recipe(ingredients, curUser.tastePreferences, curUser.allergies, curUser.recipesUsed, used);
+    console.log(req.body)
     res.status(200).json({
       success: true,
       data: recipes
@@ -104,7 +106,7 @@ router.get('/recipe/generate', async (req, res) => {
 });
 
 
-// Create Recipe with ingredients TODO: add the recipe to the user's recipesUsed
+// Create Recipe with ingredients 
 router.post('/recipe/create', async (req, res) => {
   try {
     // Extracting recipe data from the request body
@@ -228,9 +230,9 @@ router.get('/post/recent/:n', async (req, res) => {
     .populate('user')
     .populate('recipe')
     .populate({
-      path: 'GlobalRatings',
+      path: 'recipe',
       populate: {
-        path: 'recipe'
+        path: 'GlobalRatings'
       }
     })
     .populate({
@@ -238,7 +240,8 @@ router.get('/post/recent/:n', async (req, res) => {
       populate: {
         path: 'user'
       }
-    });
+    })
+    console.log(posts[0])
     
 
     res.status(200).json({
@@ -378,14 +381,16 @@ router.post('/rating/create', async (req, res) => {
     // Save the new rating to the database
     await rating.save();
 
+
     res.status(201).json({
       success: true,
       message: 'Rating created successfully',
       data: rating
     });
   } catch (error) {
+    console.log(error)
     res.status(500).json({
-      error: error.message
+      error: error
     });
   }
 });

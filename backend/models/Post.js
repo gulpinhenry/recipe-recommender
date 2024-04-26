@@ -23,24 +23,19 @@ const postSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-postSchema.methods.getAvgScore = async function(){
-  const post = this;
-  if (!post.ratings) {
-    return 0;
+// Get average score method
+postSchema.methods.getAvgScore = async function() {
+  await this.populate('ratings').execPopulate(); // Correctly populate ratings
+  const ratings = this.ratings;
+  if (!ratings || ratings.length === 0) {
+    return 0; // Return 0 if no ratings
   }
-  const len = post.ratings.length; // TODO this is wrong
-  let sum = 0;
-  if (len <= 0){
-    return 0;
-  }
-  else{
-    await post.populate('PostRatings')
-    for (let i = 0; i < len; i++) {
-      sum += post.ratings[i].score;
-    }
-  }
-  return sum/len;
-}
+
+  const sum = ratings.reduce((acc, cur) => acc + cur.score, 0);
+  const average = sum / ratings.length;
+  return average;
+};
+
 
 
 
