@@ -10,24 +10,24 @@ const RecipeForm = ({ props}) => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
 
-//   const { category, ingredients, procedures, cook_time, picture } = useSelector(
-//     (state) => state.forms
-//   );
+  // const { category, ingredients, procedures, cook_time, picture } = useSelector(
+  //   (state) => state.forms
+  // );
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
+  //   const formData = new FormData();
 
-    // formData.append("category.name", category);
-    // formData.append("picture", picture, picture.name);
-    // formData.append("title", title);
-    // formData.append("desc", desc);
-    // formData.append("cook_time", cook_time);
-    // formData.append("ingredients", JSON.stringify(ingredients));
-    // formData.append("procedure", JSON.stringify(procedures));
+  //   formData.append("category.name", category);
+  //   formData.append("picture", picture, picture.name);
+  //   formData.append("title", title);
+  //   formData.append("desc", desc);
+  //   formData.append("cook_time", cook_time);
+  //   formData.append("ingredients", JSON.stringify(ingredients));
+  //   formData.append("procedure", JSON.stringify(procedures));
 
-    props.handleFormSubmit(formData);
+  //   props.handleFormSubmit(formData);
   };
 
   return (
@@ -60,9 +60,6 @@ const RecipeForm = ({ props}) => {
                       id="title"
                       className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full border border-gray-300 rounded-md"
                       placeholder="Write a title for your recipe. Something catchy ..."
-                    //   defaultValue={
-                    //     props.editMode ? props.recipe[0].title : null
-                    //   }
                       onChange={(e) => setTitle(e.target.value)}
                     />
                   </div>
@@ -77,9 +74,6 @@ const RecipeForm = ({ props}) => {
                         rows={3}
                         className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
                         placeholder="Write a short description..."
-                        // defaultValue={
-                        //   props.editMode ? props.recipe[0].desc : null
-                        // }
                         onChange={(e) => setDesc(e.target.value)}
                       />
                     </div>
@@ -92,8 +86,6 @@ const RecipeForm = ({ props}) => {
                     editMode={false}
                     recipe={null}
                   />
-                  {/* <Procedure editMode={true} recipe={props.recipe} />
-                  <TimePicker editMode={true} recipe={props.recipe} /> */}
                   <PictureUpload />
                 </div>
                 <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
@@ -101,7 +93,7 @@ const RecipeForm = ({ props}) => {
                     type="submit"
                     className="w-full bg-teal-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-cyan-500"
                   >
-                    create
+                    Create Post
                   </button>
                 </div>
               </div>

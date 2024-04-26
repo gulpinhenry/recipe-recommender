@@ -39,11 +39,11 @@ const Nav = ({search,setSearch,setShowMenu,profileImg}) => {
         <AiOutlineHome className='nav-icons'/>
       </Link>
 
-        <Link to="/notification" id='notifi' style={{marginTop:"8px"}}><IoNotificationsOutline className='nav-icons'/><span>5</span></Link>
+        {/* <Link to="/notification" id='notifi' style={{marginTop:"8px"}}><IoNotificationsOutline className='nav-icons'/><span>5</span></Link>
 
         <LiaUserFriendsSolid
         className='nav-icons'
-        onClick={()=>setShowMenu(true)}/>
+        onClick={()=>setShowMenu(true)}/> */}
       </div>
 
 

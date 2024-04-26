@@ -1,0 +1,18 @@
+.star-rating {
+    display: flex;
+    align-items: center;
+  }
+
+  .star {
+    color: transparent; /* This will make the star's fill transparent */
+    stroke: orange; /* This styles the outline of the star */
+    stroke-width: 1; /* Adjust the width of the outline */
+  }
+
+  .filled {
+    color: orange; /* Fill color for selected stars */
+  }
+
+  .half-filled {
+    /* If you want a different style for half-filled stars, adjust here */
+  }
