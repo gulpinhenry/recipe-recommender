@@ -11,8 +11,69 @@ import "../Profile/Profile.css"
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import TagInput from "./ProfileEdit"
+import React from 'react';
+import Slider from 'react-slick';
 
-import moment from 'moment'
+import moment from 'moment';
+
+const MyPosts = ({ username }) => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    if (!username) return;
+
+    fetch(`/api/post/user/${username}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          setPosts(data.data);
+        } else {
+          console.error('Failed to fetch posts:', data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching posts:', error);
+      });
+  }, [username]);
+
+  const settings = {
+    dots: true,
+    infinite: posts.length > 3,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  };
+
+  return (
+    <div>
+      <h2>{username ? `${username}'s Posts` : 'User Posts'}</h2>
+      <Slider {...settings}>
+        {posts.map(post => (
+          <div key={post._id}>
+            <h3>{post.recipe ? post.recipe.name : 'No Recipe Name'}</h3>
+            <p>{post.caption}</p>
+          </div>
+        ))}
+      </Slider>
+    </div>
+  );
+};
 
 function Dashboard() {
   const [tastePreferences, setTastePreferences] = useState([{ id: 'sweet', text: 'Sweet' }]);
@@ -98,6 +159,7 @@ const Profile = ({following,
         />
 
     <Dashboard />
+    <MyPosts userName="henry" />
         {/* <UserHome
         modelDetails={modelDetails}
         profileImg={profileImg}
