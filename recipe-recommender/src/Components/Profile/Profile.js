@@ -8,6 +8,8 @@ import img3 from  "../../Assets/info_dp/img-3.jpg"
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import "../Profile/Profile.css"
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 import TagInput from "./ProfileEdit"
 
 import moment from 'moment'

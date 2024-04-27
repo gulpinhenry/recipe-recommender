@@ -5,6 +5,7 @@
   padding-left: 15px;
   margin: 0;
   list-style: none;
+  min-height: 50px;
 }
 
   .tag-item {
@@ -12,7 +13,6 @@
     border-radius: 5px;
     padding: 5px 10px;
     margin-right: 10px;
-    margin-bottom: 5px;
     margin-left: 5px;
     display: flex;
     align-items: center;
