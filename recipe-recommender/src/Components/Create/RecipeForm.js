@@ -8,6 +8,7 @@ const RecipeForm = ({ handleFormSubmit }) => {
   const [desc, setDesc] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState("");
+  const [description, setDescription] = useState("");
   const [calories, setCalories] = useState(0);
   const [foodCategories, setFoodCategories] = useState([]);
   const [caption, setCaption] = useState("");
