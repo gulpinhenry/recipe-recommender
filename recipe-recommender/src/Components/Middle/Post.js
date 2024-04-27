@@ -56,15 +56,17 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
 
   const [showDelete, setShowDelete] = useState(false);
   const [showComment, setShowComment] = useState(false);
-
   const getAverageRating = (ratings) => {
     if (!Array.isArray(ratings) || ratings.length === 0) {
       return 0;
     }
 
-    const sum = ratings.reduce((accumulator, current) => accumulator + current.score, 0);
+    const sum = ratings.reduce(
+      (accumulator, current) => accumulator + current.score,
+      0
+    );
     return sum / ratings.length;
-  }
+  };
 
   const handleDelete = async (id) => {
     // Confirm before deleting
@@ -187,7 +189,7 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
       alert("Failed to add recipe to your list.");
     }
   };
-  
+
   return (
     <div className="post">
       <Link to="/FriendsId" style={{ textDecoration: "none" }}>
@@ -236,7 +238,9 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
           <>
             <img src={tempImage} alt="" className="post-img" />
             <div className="img-overlay">
-              <p className="img-text">{post.name}</p>
+              <Link to={`/recipe/${post.id}`}>
+                <p className="img-text">{post.name}</p>
+              </Link>
             </div>
           </>
         )}
