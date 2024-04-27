@@ -426,6 +426,35 @@ router.post('/user/settings', async (req, res) => {
   }
 });
 
+// GET user settings
+router.get('/user/settings/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'User settings retrieved successfully',
+      data: {
+        allergy: user.allergy,
+        tastePreferences: user.tastePreferences
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+});
+
+
 
 module.exports = router;
 
