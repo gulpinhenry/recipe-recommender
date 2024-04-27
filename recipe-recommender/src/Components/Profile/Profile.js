@@ -6,9 +6,51 @@ import img1 from "../../Assets/info_dp/img-1.jpg"
 import img2 from  "../../Assets/info_dp/img-2.jpg"
 import img3 from  "../../Assets/info_dp/img-3.jpg"
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import "../Profile/Profile.css"
+import TagInput from "./ProfileEdit"
 
 import moment from 'moment'
+
+function Dashboard() {
+  const [tastePreferences, setTastePreferences] = useState([{ id: 'sweet', text: 'Sweet' }]);
+  const [allergySettings, setAllergySettings] = useState([{ id: 'nuts', text: 'Nuts' }]);
+  const [inputValueTaste, setInputValueTaste] = useState('');
+  const [inputValueAllergy, setInputValueAllergy] = useState('');
+
+  const navigate = useNavigate(); // Hook for navigation
+
+  const saveAndBacktrack = () => {
+    // Save logic here (API call or localStorage)
+    console.log('Saving settings:', { tastePreferences, allergySettings });
+    // After saving, navigate back to the profile page
+    navigate('/profile');
+  };
+
+  return (
+    <div>
+      <h2>Taste Preferences</h2>
+      <TagInput
+        tags={tastePreferences}
+        setTags={setTastePreferences}
+        inputValue={inputValueTaste}
+        setInputValue={setInputValueTaste}
+      />
+
+      <h2>Allergy Settings</h2>
+      <TagInput
+        tags={allergySettings}
+        setTags={setAllergySettings}
+        inputValue={inputValueAllergy}
+        setInputValue={setInputValueAllergy}
+      />
+
+      <button onClick={() => navigate('/profile')} className="backtrack-button">Reset</button>
+      <button onClick={saveAndBacktrack} className="save-button">Save</button>
+
+    </div>
+  );
+}
 
 const Profile = ({following,
                         search,
@@ -53,6 +95,7 @@ const Profile = ({following,
         setUserName={setUserName}
         />
 
+    <Dashboard />
         {/* <UserHome
         modelDetails={modelDetails}
         profileImg={profileImg}
@@ -63,5 +106,7 @@ const Profile = ({following,
     </div>
   )
 }
+
+
 
 export default Profile
