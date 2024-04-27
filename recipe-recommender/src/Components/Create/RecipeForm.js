@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Category from "./Category.js";
 import Ingredients from "./Ingredients";
+import PictureUpload from "./PictureUpload.js";
 
 const RecipeForm = ({ handleFormSubmit }) => {
   const [title, setTitle] = useState("");
@@ -12,6 +13,7 @@ const RecipeForm = ({ handleFormSubmit }) => {
   const [usedRecipes, setUsedRecipes] = useState([]);
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
+  const [description, setDescription] = useState("")
 
   const generateRecipe = async () => {
     setLoading(true); // Start loading
@@ -108,17 +110,51 @@ const RecipeForm = ({ handleFormSubmit }) => {
 
   return (
     <>
-      <div className="md:grid md:grid-cols-3 md:gap-6">
-        <div className="md:col-span-1">
-          <button onClick={generateRecipe} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" disabled={loading}>
-              {loading ? "Loading..." : "Generate Recipe"}
+      <div class="md:grid md:grid-cols-2 md:gap-6">
+        <div className="md:col-span-1 p-4">
+          <div class="mb-6">
+            <h1 className="text-lg leading-6 font-medium text-gray-900">
+              Description
+            </h1>
+            <textarea
+              id="Description"
+              name="Description"
+              rows={5}
+              className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+              placeholder="Feel free to provide basic description for your recipe"
+              value={description}
+            />
+          </div>
+          {/* <div class="mb-6">
+          <PictureUpload />
+          </div> */}
+          <div class="mb-6">
+                  <h1 className="text-lg leading-6 font-medium text-gray-900">
+                    Caption
+                  </h1>
+                  <textarea
+                    id="caption"
+                    name="caption"
+                    rows={3}
+                    className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                    placeholder="Add a caption for your recipe post"
+                    value={caption}
+                    onChange={(e) => setCaption(e.target.value)}
+                  />
+                </div>
+          <button
+            onClick={generateRecipe}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Generate Recipe"}
           </button>
         </div>
-        <div className="mt-5 md:mt-0 md:col-span-2">
+        <div className="p4">
           <form onSubmit={handleSubmit}>
             <div className="shadow sm:rounded-md sm:overflow-hidden">
               <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
-                <div>
+              <div>
                   <h1 className="text-lg leading-6 font-medium text-gray-900">Recipe Name</h1>
                   <input
                     type="text"
@@ -130,9 +166,17 @@ const RecipeForm = ({ handleFormSubmit }) => {
                     readOnly
                   />
                 </div>
-                <Ingredients editMode={true} recipe={ingredients} setIngredients={setIngredients} />
+              <div>
+          <Ingredients
+            editMode={true}
+            recipe={ingredients}
+            setIngredients={setIngredients}
+          />
+          </div>
                 <div>
-                  <h1 className="text-lg leading-6 font-medium text-gray-900">Instructions</h1>
+                  <h1 className="text-lg leading-6 font-medium text-gray-900">
+                    Instructions
+                  </h1>
                   <textarea
                     id="instructions"
                     name="instructions"
@@ -144,7 +188,9 @@ const RecipeForm = ({ handleFormSubmit }) => {
                   />
                 </div>
                 <div>
-                  <h1 className="text-lg leading-6 font-medium text-gray-900">Calories</h1>
+                  <h1 className="text-lg leading-6 font-medium text-gray-900">
+                    Calories
+                  </h1>
                   <input
                     type="text"
                     name="calories"
@@ -156,7 +202,9 @@ const RecipeForm = ({ handleFormSubmit }) => {
                   />
                 </div>
                 <div>
-                  <h1 className="text-lg leading-6 font-medium text-gray-900">Food Categories</h1>
+                  <h1 className="text-lg leading-6 font-medium text-gray-900">
+                    Food Categories
+                  </h1>
                   <div className="mt-1">
                     <input
                       type="text"
@@ -164,23 +212,12 @@ const RecipeForm = ({ handleFormSubmit }) => {
                       id="foodCategories"
                       className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full border border-gray-300 rounded-md"
                       placeholder="Applicable food categories will be listed here"
-                      value={foodCategories.join(', ')}  // Display categories as a comma-separated list
+                      value={foodCategories.join(", ")} // Display categories as a comma-separated list
                       readOnly
                     />
                   </div>
                 </div>
-                <div>
-                  <h1 className="text-lg leading-6 font-medium text-gray-900">Caption</h1>
-                  <textarea
-                    id="caption"
-                    name="caption"
-                    rows={3}
-                    className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
-                    placeholder="Add a caption for your recipe post"
-                    value={caption}
-                    onChange={(e) => setCaption(e.target.value)}
-                  />
-                </div>
+
               </div>
               <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                 <button

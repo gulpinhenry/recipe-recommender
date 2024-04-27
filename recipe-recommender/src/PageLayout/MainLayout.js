@@ -10,16 +10,15 @@ const LandingPage = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    fetch('/api/post/recent/100')
-      .then(response => {
+    fetch("/api/post/recent/100")
+      .then((response) => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         return response.json();
       })
-      .then(data => {
-
-        const formattedPosts = data.data.map(post => ({
+      .then((data) => {
+        const formattedPosts = data.data.map((post) => ({
           id: post._id,
           username: post.user.username,
           profilepicture: "URL/to/profile/picture", // Adjust this as needed
@@ -27,13 +26,20 @@ const LandingPage = () => {
           datetime: moment(post.createdAt).fromNow(),
           recipeid: post.recipe._id,
           name: post.recipe.name,
-          ingredients: post.recipe.ingredients.join(', '),
-          categories: post.recipe.foodCategories.join(', '),
+          ingredients: post.recipe.ingredients.join(", "),
+          categories: post.recipe.foodCategories.join(", "),
           calories: post.recipe.calories,
           // instructions: (post.recipe.instructions.split('.').filter(step => step.trim().length > 0)).map((step, index) => `${index + 1}. ${step.trim()}`).join('\n'),
           instructions: post.recipe.instructions,
           // Iterate through GlobalRatings and get the average of GlobatRatings.score, and then round to 2 decimals
-          score: post.recipe.GlobalRatings ? (post.recipe.GlobalRatings.reduce((acc, rating) => acc + rating.score, 0) / post.recipe.GlobalRatings.length).toFixed(2) : 0,
+          score: post.recipe.GlobalRatings
+            ? (
+                post.recipe.GlobalRatings.reduce(
+                  (acc, rating) => acc + rating.score,
+                  0
+                ) / post.recipe.GlobalRatings.length
+              ).toFixed(2)
+            : 0,
           caption: post.caption,
 
           like: 0, // Default value, update if backend includes this info
@@ -43,10 +49,12 @@ const LandingPage = () => {
           userid: `@${post.user.username}`,
           ModelCountryName: "Country", // Placeholder or add to backend
           ModelJobName: "Job Title", // Placeholder or add to backend
-          ModelJoinedDate: `Joined in ${moment(post.user.createdAt).format('YYYY-MM-DD')}`,
+          ModelJoinedDate: `Joined in ${moment(post.user.createdAt).format(
+            "YYYY-MM-DD"
+          )}`,
           followers: 0, // Default or actual data if included in backend
 
-          ratings: post.PostRatings.map(rating => ({
+          ratings: post.PostRatings.map((rating) => ({
             id: rating._id,
             score: rating.score,
             user: rating.user.username,
@@ -56,7 +64,9 @@ const LandingPage = () => {
         }));
         setPosts(formattedPosts);
       })
-      .catch(error => console.error('There was an error fetching the posts:', error));
+      .catch((error) =>
+        console.error("There was an error fetching the posts:", error)
+      );
   }, []);
 
   return (
@@ -65,7 +75,7 @@ const LandingPage = () => {
       <div className="home">
         <Left />
         <Middle posts={posts} />
-        <Right />
+        {/* <Right /> */}
       </div>
     </div>
   );
