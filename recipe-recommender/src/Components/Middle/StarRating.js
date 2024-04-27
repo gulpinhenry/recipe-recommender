@@ -16,7 +16,8 @@ const StarRating = ({ currentRating, maxRating = 5, onRating }) => {
   };
 
   const handleClick = (value) => {
-    setCurrentValue(value);
+    setCurrentValue(currentRating);
+    handleRating(value);
   };
 
   const handleMouseOver = (newHoverValue) => {

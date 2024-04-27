@@ -30,7 +30,7 @@ router.get('/user/username/:username', async (req, res) => {
 });
 
 /**
- * 
+ *
  * Logs in a user.
  */
 router.post('/user/login', async (req, res) => {
@@ -62,7 +62,7 @@ router.post('/user/login', async (req, res) => {
 
 
 /**
- * 
+ *
  * Creates a new user in the database.
  */
 router.post('/user/create', async (req, res) => {
@@ -72,7 +72,7 @@ router.post('/user/create', async (req, res) => {
 
     const userData = { username, email, password };
     const user = new User(userData);
-    
+
     await user.save();
 
     res.status(200).json({
@@ -106,7 +106,7 @@ router.post('/recipe/generate', async (req, res) => {
 });
 
 
-// Create Recipe with ingredients 
+// Create Recipe with ingredients
 router.post('/recipe/create', async (req, res) => {
   try {
     // Extracting recipe data from the request body
@@ -177,6 +177,7 @@ router.get('/post/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const post = await Post.findById(id).populate('user').populate('recipe').populate('ratings');
+
     if (!post) {
       return res.status(404).json({
         success: false,
@@ -242,7 +243,7 @@ router.get('/post/recent/:n', async (req, res) => {
       }
     })
     console.log(posts[0])
-    
+
 
     res.status(200).json({
       success: true,
@@ -259,7 +260,7 @@ router.get('/post/recent/:n', async (req, res) => {
 // Create Post
 router.post('/post/create', async (req, res) => {
   try {
-    const { caption, username, recipename } = req.body; 
+    const { caption, username, recipename } = req.body;
 
     // Ensure the user ID is provided (User existence check could also be added here if necessary)
     const user = await User.findOne({ username })
