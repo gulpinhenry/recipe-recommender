@@ -8,35 +8,35 @@ const RecipeForm = ({ handleFormSubmit }) => {
   const [desc, setDesc] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState("");
-  const [description, setDescription] = useState("");
   const [calories, setCalories] = useState(0);
   const [foodCategories, setFoodCategories] = useState([]);
   const [usedRecipes, setUsedRecipes] = useState([]);
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
+  const [description, setDescription] = useState("")
 
   const generateRecipe = async () => {
     setLoading(true); // Start loading
-    const username = localStorage.getItem("username");
-    const ingredientNames = ingredients.map((ingredient) => ingredient.name);
+    const username = localStorage.getItem('username');
+    const ingredientNames = ingredients.map(ingredient => ingredient.name);
+
     const requestBody = {
-      description: description,
       ingredients: ingredientNames,
       username,
-      used: [],
+      used: []
     };
 
     try {
-      const response = await fetch("/api/recipe/generate", {
-        method: "POST",
+      const response = await fetch('/api/recipe/generate', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify(requestBody)
       });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error('Network response was not ok');
       }
 
       const result = await response.json();
@@ -44,24 +44,22 @@ const RecipeForm = ({ handleFormSubmit }) => {
         const recipeData = JSON.parse(result.data);
         setTitle(recipeData.name);
         setDesc(recipeData.instructions);
-        setIngredients(
-          recipeData.ingredients.map((ing) => ({ name: ing, isNew: true }))
-        );
+        setIngredients(recipeData.ingredients.map(ing => ({ name: ing, isNew: true })));
         setInstructions(recipeData.instructions);
         setCalories(recipeData.calories);
         setFoodCategories(recipeData.foodCategories);
         setCaption("");
       }
     } catch (error) {
-      console.error("Error generating recipe:", error);
+      console.error('Error generating recipe:', error);
     } finally {
       setLoading(false); // End loading
     }
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const username = localStorage.getItem("username"); // Assume username is stored in localStorage
-    const ingredientNames = ingredients.map((ingredient) => ingredient.name);
+    const username = localStorage.getItem('username'); // Assume username is stored in localStorage
+    const ingredientNames = ingredients.map(ingredient => ingredient.name);
 
     const recipeBody = {
       username,
@@ -69,43 +67,44 @@ const RecipeForm = ({ handleFormSubmit }) => {
       ingredients: ingredientNames,
       instructions,
       calories,
-      foodCategories,
+      foodCategories
     };
 
     const postBody = {
       username,
       recipename: title,
-      caption,
+      caption
     };
 
     try {
       // Create the recipe
-      console.log("recipeBody:", recipeBody);
-      const recipeResponse = await fetch("/api/recipe/create", {
-        method: "POST",
+      console.log('recipeBody:', recipeBody)
+      const recipeResponse = await fetch('/api/recipe/create', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(recipeBody),
+        body: JSON.stringify(recipeBody)
       });
 
-      if (!recipeResponse.ok) throw new Error("Failed to create recipe");
+      if (!recipeResponse.ok) throw new Error('Failed to create recipe');
 
       // Create the post
-      const postResponse = await fetch("/api/post/create", {
-        method: "POST",
+      const postResponse = await fetch('/api/post/create', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(postBody),
+        body: JSON.stringify(postBody)
       });
 
-      if (!postResponse.ok) throw new Error("Failed to create post");
+      if (!postResponse.ok) throw new Error('Failed to create post');
 
       // Redirect to the home page and reload
       window.location.href = "/"; // Redirect to home page
+
     } catch (error) {
-      console.error("Error creating recipe or post:", error);
+      console.error('Error creating recipe or post:', error);
     }
   };
 
