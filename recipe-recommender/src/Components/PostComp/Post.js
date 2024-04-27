@@ -3,7 +3,6 @@ import RecipeForm from '../Create/RecipeForm'
 import MealSingle from '../SingleMeal/SingleMeal'
 import SavedRecipes from '../SavedPost/SavedPost'
 import Profile from '../Profile/Profile'
-import ProfileEdit from '../ProfileEdit/ProfileEdit'
 import "../Middle/Post.css"
 
 
@@ -17,8 +16,6 @@ const determine_type = (type) => {
       return <MealSingle/>
     case "profile":
       return <Profile/>
-    case "profileupdate":
-      return <ProfileEdit/>
   }
 }
 

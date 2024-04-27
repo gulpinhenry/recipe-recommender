@@ -29,16 +29,16 @@ function Dashboard() {
 
   return (
     <div>
-      <h2>Taste Preferences</h2>
       <TagInput
+        title = "Taste Preferences"
         tags={tastePreferences}
         setTags={setTastePreferences}
         inputValue={inputValueTaste}
         setInputValue={setInputValueTaste}
       />
 
-      <h2>Allergy Settings</h2>
       <TagInput
+        title = "Allergy Settings"
         tags={allergySettings}
         setTags={setAllergySettings}
         inputValue={inputValueAllergy}

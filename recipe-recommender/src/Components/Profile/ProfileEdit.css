@@ -1,21 +1,27 @@
 .tag-list {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 5px;
-    margin: 0;
-    list-style: none;
-  }
-  
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px;
+  padding-left: 15px;
+  margin: 0;
+  list-style: none;
+}
+
   .tag-item {
     background-color: #efefef;
     border-radius: 5px;
     padding: 5px 10px;
     margin-right: 10px;
     margin-bottom: 5px;
+    margin-left: 5px;
     display: flex;
     align-items: center;
   }
   
+  .tag-title{
+    margin-left: 20px;
+  }
+
   .tag-remove-button {
     margin-left: 5px;
     border: none;
@@ -33,6 +39,7 @@
   input {
     margin-top: 10px;
     margin-bottom: 20px;
+    margin-left: 20px;
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 3px;
@@ -41,6 +48,7 @@
   .save-button, .backtrack-button {
     margin-top: 10px;
     margin-right: 20px;
+    margin-left: 20px;
     padding: 8px 16px;
     background-color: orangered;
     color: white;
