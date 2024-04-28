@@ -65,23 +65,3 @@
   .my-posts-button.next { /* Additional class for the next button */
     right: 10px; /* Adjust as needed to avoid overlap */
   }
-
-  .additional-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .ingredients {
-    flex: 1;
-    text-align: left;
-  }
-  
-  .score {
-    text-align: right;
-  }
-  
