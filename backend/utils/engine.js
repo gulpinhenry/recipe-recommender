@@ -11,12 +11,12 @@ async function test_engine() {
   console.log(completion.choices[0]);
 }
 
-async function get_recipe(ingredients, tastePreferences, allergies, existingRecipes = [], used = []) {
+async function get_recipe(description, ingredients, tastePreferences, allergies, existingRecipes = [], used = []) {
     const allergyText = allergies != null && allergies.length > 0 ? allergies.join(', ') : 'none';
     const existingRecipesText = existingRecipes != null && existingRecipes.length > 0 ? existingRecipes.join(', ') : 'none';
     const usedText = used != null && used.length > 0 ? used.join(', ') : 'none';
     const promptMessage = `I have the following ingredients: ${ingredients.join(', ')}. I am looking for a recipe that is ${tastePreferences}, and similar to ${existingRecipesText} but not exactly the same.
-     However, I am allergic to ${allergyText}, so the recipe cannot have these ingredients. Can you suggest a recipe? Use only the ingredients given, as well as common household ingredients like water, salt, oil. I do not want any recipes that are in this list: ${usedText}. Please output it in the 
+     However, I am allergic to ${allergyText}, so the recipe cannot have these ingredients. Can you suggest a recipe that has a description something like this: ${description}? Use only the ingredients given, as well as common household ingredients like water, salt, oil. I do not want any recipes that are in this list: ${usedText}. Please output it in the 
      following JSON format: name: String, ingredients: [String], instructions: String, calories: Number, foodCategories: [String].`;
 
     try {
