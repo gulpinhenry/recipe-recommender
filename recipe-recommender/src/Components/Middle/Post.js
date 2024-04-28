@@ -37,6 +37,7 @@ import tempImage from "../../Assets/Post_Images/img1.jpg";
 
 const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
   const [comments, setComments] = useState(false);
+  const [postComments, setPostComments] = useState(post.ratings);
 
   const [like, setLike] = useState(post.like);
   const [unlike, setUnlike] = useState(false);
@@ -67,7 +68,6 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
     );
     return sum / ratings.length;
   };
-  console.log(post);
 
   const handleDelete = async (id) => {
     // Confirm before deleting
@@ -98,6 +98,7 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
     }
   };
   const [commentInput, setCommentInput] = useState("");
+  const [ratingInput, setRatingInput] = useState(0);
 
   const handleCommentInput = async (e) => {
     e.preventDefault();
@@ -116,7 +117,6 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
       // score: parseInt(score, 5),
       comment: commentInput,
     };
-    console.log(data);
     // Posting the data to the API endpoint
     try {
       if (data.comment === "") {
@@ -151,6 +151,88 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
       window.location.reload();
     } catch (error) {
       console.error("Error:", error);
+    }
+  };
+  const fetchRatingsByPostId = async (postId) => {
+    const url = `/api/rating/post/${postId}`; // Construct the URL with the post ID
+
+    try {
+      const response = await fetch(url, {
+        method: "GET", // HTTP method
+        headers: {
+          "Content-Type": "application/json", // Set the content type header
+        },
+      });
+
+      const data = await response.json(); // Parse the JSON response
+
+      if (response.ok) {
+        console.log("Ratings fetched successfully:", data.data);
+        return data.data; // Return the ratings data
+      } else {
+        throw new Error(data.error || "Failed to fetch ratings");
+      }
+    } catch (error) {
+      console.error("Error fetching ratings:", error);
+      return null; // Return null or handle the error as needed
+    }
+  };
+
+  const handleRating = async (
+    username,
+    recipename,
+    post_id,
+    score,
+    comment
+  ) => {
+    // Prepare the data to be sent to the backend
+    const ratingData = {
+      username,
+      recipename,
+      post_id,
+      score,
+      comment,
+    };
+
+    // Make a POST request to the backend
+    try {
+      const response = await fetch("/api/rating/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(ratingData),
+      });
+
+      const result = await response.json();
+      console.log(result);
+      // Handle the response from the server
+      if (response.ok) {
+        console.log("Rating submitted successfully:", result);
+      } else {
+        console.error("Failed to submit rating:", result.message);
+      }
+    } catch (error) {
+      console.error("Error submitting rating:", error);
+    }
+  };
+
+  const handleSubmitComment = async (e) => {
+    e.preventDefault();
+    try {
+      await handleRating(
+        post.username,
+        post.name,
+        post.id,
+        ratingInput,
+        commentInput
+      );
+      const newComments = await fetchRatingsByPostId(post.id);
+      // console.log(newComments);
+      setPostComments(newComments);
+    } catch (error) {
+      console.error("Error in creating comment:", error);
+      return null;
     }
   };
 
@@ -250,7 +332,10 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
       <div className="post-foot">
         <div className="post-footer">
           <div className="like-icons">
-            <StarRating currentRating={getAverageRating(post.ratings)} post={post}/>
+            <StarRating
+              currentRating={getAverageRating(post.ratings)}
+              post={post}
+            />
 
             <MessageRoundedIcon
               onClick={() => setShowComment(!showComment)}
@@ -263,16 +348,9 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
               />
             )}
           </div>
-
-          {/* <div className="like-comment-details">
-            <span className="post-comment">
-              {post.ratings == null ? 0 : post.ratings.length} rating(s)
-            </span>
-          </div> */}
-        
           {showComment && post.ratings != null && (
             <div className="commentSection">
-              <form onSubmit={handleCommentInput}>
+              <form onSubmit={handleSubmitComment}>
                 <div className="cmtGroup">
                   <SentimentSatisfiedRoundedIcon className="emoji" />
 
@@ -285,22 +363,26 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
                     value={commentInput}
                   />
                   {/* add another input for the score */}
-                  {/* <input
+                  <input
                     type="number"
                     id="scoreInput"
                     required
                     placeholder="Score (1-5)"
-                  /> */}
+                    onChange={(e) => setRatingInput(e.target.value)}
+                    value={ratingInput}
+                  />
 
-                  <button type="submit">
+                  <button
+                    type="submit"
+                  >
                     <SendRoundedIcon className="send" />
                   </button>
                 </div>
               </form>
 
               <div className="sticky">
-                {post.ratings.map((comment) => (
-                  <Comments key={comment.id} cmt={comment} />
+                {postComments.map((comment) => (
+                  <Comments cmt={comment} />
                 ))}
               </div>
             </div>
