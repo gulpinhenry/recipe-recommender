@@ -30,9 +30,9 @@ const Info = ({
   };
 
   const modelDetails = {
-    ModelName: "John Snow",
+    ModelName: localStorage.getItem("username"),
     ModelCountryName: "Japan",
-    ModelUserName: "ABCDEFG",
+    // ModelUserName: "ABCDEFG",
     ModelJobName: "Cook",
   };
 
@@ -55,7 +55,7 @@ const Info = ({
 
       <div className="info-follow">
         <h1>{modelDetails.ModelName}</h1>
-        <p>{modelDetails.ModelUserName}</p>
+        {/* <p>{modelDetails.ModelUserName}</p> */}
 
         {/* <Link to="/home" className='logout'>
               <BiLogOut />Logout
@@ -64,15 +64,15 @@ const Info = ({
           <BiLogOut /> Logout
         </button>
 
-        <button>
+        {/* <button>
           <LiaEdit />
           Edit Profile
         </button>
-        <ModelProfile name={name} setName={setName} userName={userName} />
+        <ModelProfile name={name} setName={setName} userName={userName} /> */}
 
-        <div className="info-details">
+        {/* {/* <div className="info-details"> */}
           <div className="info-col-1">
-            <div className="info-details-list">
+            {/* <div className="info-details-list">
               <LocationOnOutlinedIcon />
               <span>{modelDetails.ModelCountryName}</span>
             </div>
@@ -86,7 +86,7 @@ const Info = ({
               <CalendarMonthRoundedIcon />
               <span>Joined in 2023-08-12</span>
             </div>
-          </div>
+          </div>  */}
           {/*
             <div className="info-col-2">
               <div>
