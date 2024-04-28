@@ -175,7 +175,8 @@ const Profile = ({ following, name, userName }) => {
         name={name}
         userName={userName}
       />
-      <MyPosts username="lehan" />
+      
+      <MyPosts username={localStorage.getItem('username')} />
       <Dashboard />
       
     </div>
