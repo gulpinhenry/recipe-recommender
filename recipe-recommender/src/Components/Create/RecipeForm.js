@@ -78,7 +78,6 @@ const RecipeForm = ({ handleFormSubmit }) => {
     };
 
     try {
-      // Create the recipe
       console.log('recipeBody:', recipeBody)
       const recipeResponse = await fetch('/api/recipe/create', {
         method: 'POST',
@@ -101,8 +100,7 @@ const RecipeForm = ({ handleFormSubmit }) => {
 
       if (!postResponse.ok) throw new Error('Failed to create post');
 
-      // Redirect to the home page and reload
-      window.location.href = "/"; // Redirect to home page
+      window.location.href = "/"; 
 
     } catch (error) {
       console.error('Error creating recipe or post:', error);
