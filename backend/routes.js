@@ -171,6 +171,32 @@ router.post('/recipe/add', async (req, res) => {
 });
 
 
+// Get recipeUsed by username
+
+router.get('/user/recipes/:username', async (req, res) => {
+  try {
+    const username = req.params.username;
+    const user = await User.findOne({ username })
+                            .populate('recipesUsed'); // assuming 'recipesUsed' is the correct field name in the User model
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: 'Retrieved user recipes successfully',
+      data: user.recipesUsed
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 // Get Post by ID
 router.get('/post/:id', async (req, res) => {
   try {
