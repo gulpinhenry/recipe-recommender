@@ -1,99 +1,93 @@
 import Info from './Info'
-// import UserHome from '../UserHome/UserHome'
-
 import Profileimg from "../../Assets/Friends-Cover/cover-1.jpg"
 import img1 from "../../Assets/info_dp/img-1.jpg"
 import img2 from  "../../Assets/info_dp/img-2.jpg"
 import img3 from  "../../Assets/info_dp/img-3.jpg"
-import { useEffect, useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom'
 import "../Profile/Profile.css"
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css";
-import TagInput from "./ProfileEdit"
-import React from 'react';
-import Slider from 'react-slick';
 
+import TagInput from "./ProfileEdit"
+import "./MyPost.css"
 import moment from 'moment';
 
 const MyPosts = ({ username }) => {
   const [posts, setPosts] = useState([]);
+  const [index, setIndex] = useState(0);
+  const pageSize = 3;
 
   useEffect(() => {
-    if (!username) return;
-
-    fetch(`/api/post/user/${username}`)
-      .then(response => response.json())
-      .then(data => {
+    async function fetchPosts() {
+      if (!username) return;
+      try {
+        const response = await fetch(`/api/post/user/${username}`);
+        const data = await response.json();
         if (data.success) {
           setPosts(data.data);
         } else {
           console.error('Failed to fetch posts:', data.message);
         }
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('Error fetching posts:', error);
-      });
+      }
+    }
+    fetchPosts();
   }, [username]);
 
-  const settings = {
-    dots: true,
-    infinite: posts.length > 3,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 3,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-        }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
+  const calculateAverageScore = (ratings) => {
+    if (!ratings || ratings.length === 0) return 0;
+    const totalScore = ratings.reduce((sum, rating) => sum + rating.score, 0);
+    return totalScore / ratings.length;
+  };
+
+  const handlePrev = () => {
+    setIndex((prevIndex) => Math.max(prevIndex - pageSize, 0));
+  };
+
+  const handleNext = () => {
+    setIndex((prevIndex) => Math.min(prevIndex + pageSize, posts.length - pageSize));
   };
 
   return (
-    <div>
-      <h2>{username ? `${username}'s Posts` : 'User Posts'}</h2>
-      <Slider {...settings}>
-        {posts.map(post => (
-          <div key={post._id}>
-            <h3>{post.recipe ? post.recipe.name : 'No Recipe Name'}</h3>
-            <p>{post.caption}</p>
-          </div>
-        ))}
-      </Slider>
+    <div className="my-posts-container">
+      <div className="my-posts">
+        {posts.slice(index, index + pageSize).map((post, idx) => {
+          const averageScore = calculateAverageScore(post.recipe.GlobalRatings);
+          return (
+            <div key={idx} className="my-post">
+              <h3>{post.recipe ? post.recipe.name : 'No Recipe Name'}</h3>
+              <p>{post.caption}</p>
+              <div className="additional-info">
+                <p>Ingredients: {post.recipe ? post.recipe.ingredients.join(', ') : 'No Ingredients'}</p>
+                <p>Score: {averageScore}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <button onClick={handlePrev} disabled={index === 0} className="my-posts-button prev">&#10094;</button>
+      <button onClick={handleNext} disabled={index >= posts.length - pageSize} className="my-posts-button next">&#10095;</button>
     </div>
   );
 };
 
-function Dashboard() {
+const Dashboard = () => {
   const [tastePreferences, setTastePreferences] = useState([{ id: 'sweet', text: 'Sweet' }]);
   const [allergySettings, setAllergySettings] = useState([{ id: 'nuts', text: 'Nuts' }]);
   const [inputValueTaste, setInputValueTaste] = useState('');
   const [inputValueAllergy, setInputValueAllergy] = useState('');
 
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
   const saveAndBacktrack = () => {
-    // Save logic here (API call or localStorage)
     console.log('Saving settings:', { tastePreferences, allergySettings });
-    // After saving, navigate back to the profile page
     navigate('/profile');
   };
 
   return (
     <div>
       <TagInput
-        title = "Taste Preferences"
+        title="Taste Preferences"
         tags={tastePreferences}
         setTags={setTastePreferences}
         inputValue={inputValueTaste}
@@ -101,7 +95,7 @@ function Dashboard() {
       />
 
       <TagInput
-        title = "Allergy Settings"
+        title="Allergy Settings"
         tags={allergySettings}
         setTags={setAllergySettings}
         inputValue={inputValueAllergy}
@@ -110,67 +104,37 @@ function Dashboard() {
 
       <button onClick={() => navigate('/profile')} className="backtrack-button">Reset</button>
       <button onClick={saveAndBacktrack} className="save-button">Save</button>
-
     </div>
   );
-}
+};
 
-const Profile = ({following,
-                        search,
-                        images,
-                        setImages,
-                        profileImg,
-                        setProfileImg,
-                        name,
-                        setName,
-                        userName,
-                        setUserName,
-                        modelDetails,
-                        setModelDetails}) => {
-
-  const [userPostData ,setUserPostData] =useState(
-    [
-      {
-        id:1,
-        username:"Vijay",
-        profilepicture:Profile,
-        img:img1,
-        datetime:moment("20230401", "YYYYMMDD").fromNow(),
-        body:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia illum provident consequuntur reprehenderit tenetur, molestiae quae blanditiis rem placeat! Eligendi, qui quia quibusdam dolore molestiae veniam neque fuga explicabo illum?",
-        like: 22,
-        comment:12
+const Profile = ({ following, name, userName }) => {
+  const [userPostData, setUserPostData] = useState([
+    {
+      id: 1,
+      username: "Vijay",
+      profilepicture: Profileimg,
+      img: img1,
+      datetime: moment("20230401", "YYYYMMDD").fromNow(),
+      body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia illum provident consequuntur reprehenderit tenetur, molestiae quae blanditiis rem placeat! Eligendi, qui quia quibusdam dolore molestiae veniam neque fuga explicabo illum?",
+      like: 22,
+      comment: 12
     }
-    ]
-  )
+  ]);
 
   return (
     <div className='profileMiddle'>
-        <Info
-        modelDetails ={modelDetails}
-        setModelDetails={setModelDetails}
-        profileImg={profileImg}
-        setProfileImg={setProfileImg}
+      <Info
         userPostData={userPostData}
         following={following}
         name={name}
-        setName={setName}
         userName={userName}
-        setUserName={setUserName}
-        />
-
-    <Dashboard />
-    <MyPosts userName="henry" />
-        {/* <UserHome
-        modelDetails={modelDetails}
-        profileImg={profileImg}
-        setUserPostData={setUserPostData}
-        userPostData={searchResults}
-        images={images}
-        /> */}
+      />
+    <MyPosts username="lehan" />
+      <Dashboard />
+      
     </div>
-  )
-}
+  );
+};
 
-
-
-export default Profile
+export default Profile;
