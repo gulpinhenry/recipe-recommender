@@ -46,8 +46,14 @@ const MyPosts = ({ username }) => {
     <div className="my-posts-container">
       {posts.slice(index, index + pageSize).map((post, idx) => (
         <div key={idx} className="my-post">
-          <h3>{post.recipe ? post.recipe.name : 'No Recipe Name'}</h3>
-          <p>{post.caption}</p>
+          <div>
+            <h3>{post.recipe ? post.recipe.name : 'No Recipe Name'}</h3>
+            <p>{post.caption}</p>
+          </div>
+          <div className="ingredients">
+            <strong>Ingredients: </strong>
+            {post.recipe ? post.recipe.ingredients.join(', ') : 'No Ingredients'}
+          </div>
         </div>
       ))}
       <button onClick={handlePrev} disabled={index === 0} className="my-posts-button prev">&#10094;</button>
@@ -57,16 +63,70 @@ const MyPosts = ({ username }) => {
 };
 
 const Dashboard = () => {
-  const [tastePreferences, setTastePreferences] = useState([{ id: 'sweet', text: 'Sweet' }]);
-  const [allergySettings, setAllergySettings] = useState([{ id: 'nuts', text: 'Nuts' }]);
+  const [tastePreferences, setTastePreferences] = useState([]);
+  const [allergySettings, setAllergySettings] = useState([]);
   const [inputValueTaste, setInputValueTaste] = useState('');
   const [inputValueAllergy, setInputValueAllergy] = useState('');
 
   const navigate = useNavigate();
 
-  const saveAndBacktrack = () => {
-    console.log('Saving settings:', { tastePreferences, allergySettings });
-    navigate('/profile');
+  // Function to fetch user settings
+  const fetchSettings = async () => {
+    const username = localStorage.getItem('username');
+    if (!username) {
+      console.log("No username found in local storage.");
+      return; // Early return if no username is found
+    }
+
+    try {
+      const response = await fetch(`/api/user/settings/${username}`);
+      const data = await response.json();
+      if (data.success) {
+        setTastePreferences(data.data.tastePreferences.map(pref => ({ id: pref, text: pref })));
+        setAllergySettings(data.data.allergy.map(allergy => ({ id: allergy, text: allergy })));
+      } else {
+        console.error('Failed to fetch settings:', data.message);
+      }
+    } catch (error) {
+      console.error('Error fetching user settings:', error);
+    }
+  };
+
+  // Fetch settings on mount
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const saveAndBacktrack = async () => {
+    const username = localStorage.getItem('username');
+    if (!username) {
+      console.error("No username found in local storage.");
+      return; // Early return if no username is found
+    }
+
+    try {
+      const response = await fetch('/api/user/settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username,
+          allergy: allergySettings.map(item => item.text), // Assuming your data structure needs this mapping
+          tastePreferences: tastePreferences.map(item => item.text) // Same assumption as above
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        console.log('Settings updated successfully:', data.message);
+        // Optionally, navigate back or to another route if needed
+        // navigate('/profile');
+      } else {
+        console.error('Failed to update settings:', data.message);
+      }
+    } catch (error) {
+      console.error('Error updating user settings:', error);
+    }
   };
 
   return (
@@ -87,7 +147,7 @@ const Dashboard = () => {
         setInputValue={setInputValueAllergy}
       />
 
-      <button onClick={() => navigate('/profile')} className="backtrack-button">Reset</button>
+      <button onClick={fetchSettings} className="backtrack-button">Reset</button>
       <button onClick={saveAndBacktrack} className="save-button">Save</button>
     </div>
   );

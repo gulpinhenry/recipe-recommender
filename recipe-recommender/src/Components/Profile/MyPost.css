@@ -14,13 +14,16 @@
   }
   
   .my-post {
+    display: flex; /* Setting the display to flex */
+    flex-direction: column; /* Organizing children in a vertical stack */
+    justify-content: space-between; /* Spacing between the top content and ingredients */
     flex: 1 1 calc(30% - 40px); /* Reducing width to account for button space */
     margin: 10px 20px; /* Provide space for buttons */
     text-align: center;
     padding: 10px;
     border: 1px solid #ddd;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    height: 200px;
+    height: 200px; /* Adjust height as necessary */
   }
 
   .my-post h3 {
@@ -65,3 +68,13 @@
   .my-posts-button.next { /* Additional class for the next button */
     right: 10px; /* Adjust as needed to avoid overlap */
   }
+
+  .ingredients {
+    text-align: left; /* Ensures the ingredients list is aligned to the left */
+    padding: 10px 30px; /* Adds padding around the list */
+    font-size: 0.9rem; /* Smaller font size for ingredients */
+    white-space: normal; /* Allows text to wrap */
+    overflow: visible; /* Allows overflow content to be visible */
+  }
+
+  
