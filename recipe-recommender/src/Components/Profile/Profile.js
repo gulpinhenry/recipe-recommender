@@ -34,12 +34,6 @@ const MyPosts = ({ username }) => {
     fetchPosts();
   }, [username]);
 
-  const calculateAverageScore = (ratings) => {
-    if (!ratings || ratings.length === 0) return 0;
-    const totalScore = ratings.reduce((sum, rating) => sum + rating.score, 0);
-    return totalScore / ratings.length;
-  };
-
   const handlePrev = () => {
     setIndex((prevIndex) => Math.max(prevIndex - pageSize, 0));
   };
@@ -50,21 +44,12 @@ const MyPosts = ({ username }) => {
 
   return (
     <div className="my-posts-container">
-      <div className="my-posts">
-        {posts.slice(index, index + pageSize).map((post, idx) => {
-          const averageScore = calculateAverageScore(post.recipe.GlobalRatings);
-          return (
-            <div key={idx} className="my-post">
-              <h3>{post.recipe ? post.recipe.name : 'No Recipe Name'}</h3>
-              <p>{post.caption}</p>
-              <div className="additional-info">
-                <p>Ingredients: {post.recipe ? post.recipe.ingredients.join(', ') : 'No Ingredients'}</p>
-                <p>Score: {averageScore}</p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      {posts.slice(index, index + pageSize).map((post, idx) => (
+        <div key={idx} className="my-post">
+          <h3>{post.recipe ? post.recipe.name : 'No Recipe Name'}</h3>
+          <p>{post.caption}</p>
+        </div>
+      ))}
       <button onClick={handlePrev} disabled={index === 0} className="my-posts-button prev">&#10094;</button>
       <button onClick={handleNext} disabled={index >= posts.length - pageSize} className="my-posts-button next">&#10095;</button>
     </div>
@@ -130,7 +115,7 @@ const Profile = ({ following, name, userName }) => {
         name={name}
         userName={userName}
       />
-    <MyPosts username="lehan" />
+      <MyPosts username="lehan" />
       <Dashboard />
       
     </div>
