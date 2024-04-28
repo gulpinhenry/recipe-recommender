@@ -360,12 +360,12 @@ router.post('/rating/create', async (req, res) => {
     }
 
     // Check score is within the acceptable range
-    if (score < 1 || score > 5 || !Number.isInteger(score)) {
-      return res.status(400).json({
-        success: false,
-        message: "Score must be an integer between 1 and 5."
-      });
-    }
+    // if (score < 1 || score > 5 || !Number.isInteger(score)) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Score must be an integer between 1 and 5."
+    //   });
+    // }
 
     // Construct a new rating object with the provided data
     const ratingData = {
