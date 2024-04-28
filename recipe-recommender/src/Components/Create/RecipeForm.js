@@ -21,6 +21,7 @@ const RecipeForm = ({ handleFormSubmit }) => {
     const ingredientNames = ingredients.map(ingredient => ingredient.name);
 
     const requestBody = {
+      description: description,
       ingredients: ingredientNames,
       username,
       used: []
@@ -121,25 +122,18 @@ const RecipeForm = ({ handleFormSubmit }) => {
               className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
               placeholder="Feel free to provide basic description for your recipe"
               value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
+
           {/* <div class="mb-6">
           <PictureUpload />
           </div> */}
-          <div class="mb-6">
-                  <h1 className="text-lg leading-6 font-medium text-gray-900">
-                    Caption
-                  </h1>
-                  <textarea
-                    id="caption"
-                    name="caption"
-                    rows={3}
-                    className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
-                    placeholder="Add a caption for your recipe post"
-                    value={caption}
-                    onChange={(e) => setCaption(e.target.value)}
-                  />
-                </div>
+          <Ingredients
+            editMode={true}
+            recipe={ingredients}
+            setIngredients={setIngredients}
+          />
           <button
             onClick={generateRecipe}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -165,11 +159,7 @@ const RecipeForm = ({ handleFormSubmit }) => {
                   />
                 </div>
               <div>
-          <Ingredients
-            editMode={true}
-            recipe={ingredients}
-            setIngredients={setIngredients}
-          />
+          
           </div>
                 <div>
                   <h1 className="text-lg leading-6 font-medium text-gray-900">
@@ -214,6 +204,20 @@ const RecipeForm = ({ handleFormSubmit }) => {
                       readOnly
                     />
                   </div>
+                </div>
+                <div class="mb-6">
+                  <h1 className="text-lg leading-6 font-medium text-gray-900">
+                    Caption
+                  </h1>
+                  <textarea
+                    id="caption"
+                    name="caption"
+                    rows={3}
+                    className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                    placeholder="Add a caption for your recipe post"
+                    value={caption}
+                    onChange={(e) => setCaption(e.target.value)}
+                  />
                 </div>
 
               </div>
