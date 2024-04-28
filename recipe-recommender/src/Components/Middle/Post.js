@@ -307,9 +307,13 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
       </div>
       <p className="body">
         <br></br>
-        {post.caption}
+        {post.name}: {post.caption}
+        
       </p>
-      <div className="post-img-container">
+      <Link to={`/recipe/${post.id}`} className="post-link">
+        <p className="post-link-text">view recipe</p>
+      </Link>
+      {/* <div className="post-img-container">
         {tempImage && (
           <>
             <img src={defaultPic(post.picture)} alt="" className="post-img" />
@@ -320,7 +324,10 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
             </div>
           </>
         )}
-      </div>
+      </div> */}
+      
+      {/* Add just the post name a link to the full recipe, no image */}
+      
 
       {/* Add just the post name a link to the full recipe, no image */}
 
