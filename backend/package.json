@@ -6,7 +6,8 @@
     "scripts": {
         "start": "node server.js",
         "watch": "nodemon -r dotenv/config server.js",
-        "seed": "node ./seed/seed.js"
+        "seed": "node ./seed/seed.js",
+        "test": "node ./test/test.js"
     },
     "keywords": [],
     "author": "",
@@ -23,6 +24,9 @@
         "openai": "^4.30.0"
     },
     "devDependencies": {
-        "nodemon": "^2.0.3"
+        "chai": "^5.1.0",
+        "mocha": "^10.4.0",
+        "nodemon": "^2.0.3",
+        "supertest": "^7.0.0"
     }
 }
