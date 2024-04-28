@@ -123,6 +123,7 @@ const RecipeForm = ({ handleFormSubmit }) => {
               className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
               placeholder="Feel free to provide basic description for your recipe"
               value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
           {/* <div class="mb-6">

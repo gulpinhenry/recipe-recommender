@@ -67,6 +67,7 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
     );
     return sum / ratings.length;
   };
+  console.log(post);
 
   const handleDelete = async (id) => {
     // Confirm before deleting
@@ -249,7 +250,7 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
       <div className="post-foot">
         <div className="post-footer">
           <div className="like-icons">
-            <StarRating currentRating={getAverageRating(post.ratings)} />
+            <StarRating currentRating={getAverageRating(post.ratings)} post={post}/>
 
             <MessageRoundedIcon
               onClick={() => setShowComment(!showComment)}
@@ -263,12 +264,12 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
             )}
           </div>
 
-          <div className="like-comment-details">
+          {/* <div className="like-comment-details">
             <span className="post-comment">
               {post.ratings == null ? 0 : post.ratings.length} rating(s)
             </span>
-          </div>
-
+          </div> */}
+        
           {showComment && post.ratings != null && (
             <div className="commentSection">
               <form onSubmit={handleCommentInput}>
