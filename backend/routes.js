@@ -89,10 +89,10 @@ router.post('/user/create', async (req, res) => {
 router.post('/recipe/generate', async (req, res) => {
   try {
     // used is recipes that user has already used and wants to regenerate
-    const { ingredients, username, used } = req.body;
+    const { description, ingredients, username, used } = req.body;
     // Find user recipes used from mongodb find by username
     const curUser = await User.findOne({ username });
-    const recipes = await get_recipe(ingredients, curUser.tastePreferences, curUser.allergies, curUser.recipesUsed, used);
+    const recipes = await get_recipe(description, ingredients, curUser.tastePreferences, curUser.allergies, curUser.recipesUsed, used);
     console.log(req.body)
     res.status(200).json({
       success: true,
