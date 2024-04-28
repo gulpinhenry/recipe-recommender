@@ -19,6 +19,10 @@ function App() {
       <Routes>
         <Route path="/" element={loggedIn ? <MainLayout /> : <LoginLayout />} />
         <Route
+          path="/signup"
+          element={loggedIn ? <MainLayout /> : <SignUp />}
+        />
+        <Route
           path="/create"
           element={loggedIn ? <PostLayout type={"create"} /> : <LoginLayout />}
         />
@@ -30,6 +34,7 @@ function App() {
           path="/saved"
           element={loggedIn ? <PostLayout type={"saved"} /> : <LoginLayout />}
         />
+        <Route path="/home" element={<MainLayout />} />
         <Route path="*" element={<WrongPageLayout />} />
         <Route path="/recipe/:id" element={loggedIn ? <PostLayout type={"single"}/> : <LoginLayout />} />
       </Routes>

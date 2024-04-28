@@ -29,7 +29,7 @@ const Login = () => {
 
     useEffect(()=>{
         if(Object.keys(error).length === 0 && submit){
-            navigate("/home")
+            navigate("/")
         }
     },[error])
 
