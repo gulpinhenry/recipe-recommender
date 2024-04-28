@@ -35,9 +35,9 @@ const MealSingle = ({}) => {
   return (
     <section className="sc-details bg-white">
       <div className="details-head grid">
-        <div className="details-img">
+        {/* <div className="details-img">
           <img src={meal?.thumbnail} alt="" className="img-cover" />
-        </div>
+        </div> */}
 
         <div className="details-intro">
           <h3 className="title text-orange">{meal?.recipe?.name}</h3>
@@ -70,7 +70,7 @@ const MealSingle = ({}) => {
       </div>
 
       <div className="details-body">
-        <div className="measures my-4">
+        {/* <div className="measures my-4">
           <h6 className="fs-16">Measure:</h6>
           <ul className="grid">
             {meal?.measures?.map((measure, idx) => (
@@ -82,7 +82,7 @@ const MealSingle = ({}) => {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
 
         <div className="instructions my-4">
           <h6 className="fs-16">Instructions:</h6>

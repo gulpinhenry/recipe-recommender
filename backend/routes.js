@@ -119,7 +119,7 @@ router.post('/recipe/create', async (req, res) => {
       instructions,
       calories,
       foodCategories,
-      ratings: []  // Initialize ratings as an empty array
+      ratings: []  
     };
     const recipe = new Recipe(recipeData);
 
@@ -138,7 +138,6 @@ router.post('/recipe/create', async (req, res) => {
       data: recipe
     });
   } catch (error) {
-    // Handle any errors that occur during the save operation
     res.status(500).json({
       error: error.message
     });
@@ -195,7 +194,6 @@ router.get('/post/:id', async (req, res) => {
   }
 });
 
-// TODO: get Posts by User
 // Get Posts by User
 router.get('/post/user/:id', async (req, res) => {
   try {
@@ -398,9 +396,7 @@ router.post('/rating/create', async (req, res) => {
 
 
 
-// POST user settings (only update the fields that are provided)
-// IMPORTANT this will overwrite the user's allergies and tastePreferences, so be sure to include all of them, not just edited ones
-// This makes sure user is able to delete allergies or tastePreferences if they want
+// POST user settings
 router.post('/user/settings', async (req, res) => {
   try {
     const { username, allergy, tastePreferences } = req.body;

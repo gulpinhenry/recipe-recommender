@@ -77,8 +77,8 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            // Assuming you may need to pass some kind of authorization token
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            // // Assuming you may need to pass some kind of authorization token
+            // Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
@@ -173,7 +173,6 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Assuming you use a Bearer token for authorization
         },
         body: JSON.stringify(data),
       });
@@ -202,7 +201,7 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
             onClick={() => handleFriendsId(post.id)}
             style={{ cursor: "pointer" }}
           >
-            <img src={post.profilepicture} className="p-img" alt="" />
+            {/* <img src={post.profilepicture} className="p-img" alt="" /> */}
             <h2>{post.username}</h2>
             <p className="datePara">{post.datetime}</p>
           </div>
@@ -228,12 +227,15 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
           />
         </div>
       </div>
-
       <p className="body">
         <br></br>
-        {post.caption}
+        {post.name}: {post.caption}
+        
       </p>
-      <div className="post-img-container">
+      <Link to={`/recipe/${post.id}`} className="post-link">
+        <p className="post-link-text">view recipe</p>
+      </Link>
+      {/* <div className="post-img-container">
         {tempImage && (
           <>
             <img src={tempImage} alt="" className="post-img" />
@@ -244,7 +246,10 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
             </div>
           </>
         )}
-      </div>
+      </div> */}
+      
+      {/* Add just the post name a link to the full recipe, no image */}
+      
 
       <div className="post-foot">
         <div className="post-footer">
