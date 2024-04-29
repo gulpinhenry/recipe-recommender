@@ -127,21 +127,6 @@ const RecipeForm = ({ handleFormSubmit }) => {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-
-          <div class="mb-6">
-            <h1 className="text-lg leading-6 font-medium text-gray-900">
-              Post Image
-            </h1>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full border border-gray-300 rounded-md"
-              placeholder="Feel free to upload a image URL"
-              value={picture}
-              onChange={(e) => setPicture(e.target.value)}
-            />
-          </div>
           <Ingredients
             editMode={true}
             recipe={ingredients}
@@ -232,6 +217,20 @@ const RecipeForm = ({ handleFormSubmit }) => {
                     onChange={(e) => setCaption(e.target.value)}
                   />
                 </div>
+                <div class="mb-6">
+            <h1 className="text-lg leading-6 font-medium text-gray-900">
+              Post Image
+            </h1>
+            <input
+              type="text"
+              name="title"
+              id="title"
+              className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full border border-gray-300 rounded-md"
+              placeholder="Feel free to upload a image URL"
+              value={picture}
+              onChange={(e) => setPicture(e.target.value)}
+            />
+          </div>
               </div>
               <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                 <button
