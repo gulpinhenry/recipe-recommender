@@ -222,11 +222,14 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
       );
       const newComments = await fetchRatingsByPostId(post.id);
       setPostComments(newComments);
+      setCommentInput(""); // Clear the comment input
+      setRatingInput("");
     } catch (error) {
       console.error("Error in creating comment:", error);
       return null;
     }
   };
+
 
   const handleFriendsId = (id) => {
     const friendsIdFilter = posts.filter((val) => val.id === id);
