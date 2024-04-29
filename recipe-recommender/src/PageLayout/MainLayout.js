@@ -19,6 +19,7 @@ const LandingPage = () => {
       })
       .then((data) => {
         const formattedPosts = data.data.map((post) => ({
+          picture: post.picture,
           id: post._id,
           username: post.user.username,
           profilepicture: "URL/to/profile/picture", // Adjust this as needed

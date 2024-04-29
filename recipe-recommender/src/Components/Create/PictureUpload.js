@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 
-const PictureUpload = ({}) => {
+const PictureUpload = ({setPostPicture}) => {
   const [picture, setPicture] = useState([]);
-
   return (
     <div>
       <h1 className="text-lg leading-6 font-medium text-gray-900">Picture</h1>
@@ -37,7 +36,8 @@ const PictureUpload = ({}) => {
                 type="file"
                 className="sr-only"
                 onChange={(e) => {
-                  setPicture(e.target.files[0]);
+                  // setPicture(e.target.files[0]);
+                  setPostPicture(e.target.files[0]);
                 }}
               />
             </label>

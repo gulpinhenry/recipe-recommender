@@ -10,34 +10,34 @@ const RecipeForm = ({ handleFormSubmit }) => {
   const [instructions, setInstructions] = useState("");
   const [calories, setCalories] = useState(0);
   const [foodCategories, setFoodCategories] = useState([]);
-  const [usedRecipes, setUsedRecipes] = useState([]);
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
-  const [description, setDescription] = useState("")
+  const [description, setDescription] = useState("");
+  const [picture, setPicture] = useState("");
 
   const generateRecipe = async () => {
     setLoading(true); // Start loading
-    const username = localStorage.getItem('username');
-    const ingredientNames = ingredients.map(ingredient => ingredient.name);
+    const username = localStorage.getItem("username");
+    const ingredientNames = ingredients.map((ingredient) => ingredient.name);
 
     const requestBody = {
       description: description,
       ingredients: ingredientNames,
       username,
-      used: []
+      used: [],
     };
 
     try {
-      const response = await fetch('/api/recipe/generate', {
-        method: 'POST',
+      const response = await fetch("/api/recipe/generate", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
 
       const result = await response.json();
@@ -45,22 +45,24 @@ const RecipeForm = ({ handleFormSubmit }) => {
         const recipeData = JSON.parse(result.data);
         setTitle(recipeData.name);
         setDesc(recipeData.instructions);
-        setIngredients(recipeData.ingredients.map(ing => ({ name: ing, isNew: true })));
+        setIngredients(
+          recipeData.ingredients.map((ing) => ({ name: ing, isNew: true }))
+        );
         setInstructions(recipeData.instructions);
         setCalories(recipeData.calories);
         setFoodCategories(recipeData.foodCategories);
         setCaption("");
       }
     } catch (error) {
-      console.error('Error generating recipe:', error);
+      console.error("Error generating recipe:", error);
     } finally {
       setLoading(false); // End loading
     }
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const username = localStorage.getItem('username'); // Assume username is stored in localStorage
-    const ingredientNames = ingredients.map(ingredient => ingredient.name);
+    const username = localStorage.getItem("username"); // Assume username is stored in localStorage
+    const ingredientNames = ingredients.map((ingredient) => ingredient.name);
 
     const recipeBody = {
       username,
@@ -68,42 +70,42 @@ const RecipeForm = ({ handleFormSubmit }) => {
       ingredients: ingredientNames,
       instructions,
       calories,
-      foodCategories
+      foodCategories,
     };
 
     const postBody = {
       username,
       recipename: title,
-      caption
+      caption,
+      picture,
     };
 
     try {
-      console.log('recipeBody:', recipeBody)
-      const recipeResponse = await fetch('/api/recipe/create', {
-        method: 'POST',
+      console.log("recipeBody:", recipeBody);
+      const recipeResponse = await fetch("/api/recipe/create", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(recipeBody)
+        body: JSON.stringify(recipeBody),
       });
 
-      if (!recipeResponse.ok) throw new Error('Failed to create recipe');
+      if (!recipeResponse.ok) throw new Error("Failed to create recipe");
 
       // Create the post
-      const postResponse = await fetch('/api/post/create', {
-        method: 'POST',
+      const postResponse = await fetch("/api/post/create", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(postBody)
+        body: JSON.stringify(postBody),
       });
 
-      if (!postResponse.ok) throw new Error('Failed to create post');
+      if (!postResponse.ok) throw new Error("Failed to create post");
 
-      window.location.href = "/"; 
-
+      window.location.href = "/";
     } catch (error) {
-      console.error('Error creating recipe or post:', error);
+      console.error("Error creating recipe or post:", error);
     }
   };
 
@@ -126,9 +128,20 @@ const RecipeForm = ({ handleFormSubmit }) => {
             />
           </div>
 
-          {/* <div class="mb-6">
-          <PictureUpload />
-          </div> */}
+          <div class="mb-6">
+            <h1 className="text-lg leading-6 font-medium text-gray-900">
+              Post Image
+            </h1>
+            <input
+              type="text"
+              name="title"
+              id="title"
+              className="shadow-sm p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 mt-1 block w-full border border-gray-300 rounded-md"
+              placeholder="Feel free to upload a image URL"
+              value={picture}
+              onChange={(e) => setPicture(e.target.value)}
+            />
+          </div>
           <Ingredients
             editMode={true}
             recipe={ingredients}
@@ -146,8 +159,10 @@ const RecipeForm = ({ handleFormSubmit }) => {
           <form onSubmit={handleSubmit}>
             <div className="shadow sm:rounded-md sm:overflow-hidden">
               <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
-              <div>
-                  <h1 className="text-lg leading-6 font-medium text-gray-900">Recipe Name</h1>
+                <div>
+                  <h1 className="text-lg leading-6 font-medium text-gray-900">
+                    Recipe Name
+                  </h1>
                   <input
                     type="text"
                     name="title"
@@ -158,9 +173,7 @@ const RecipeForm = ({ handleFormSubmit }) => {
                     readOnly
                   />
                 </div>
-              <div>
-          
-          </div>
+                <div></div>
                 <div>
                   <h1 className="text-lg leading-6 font-medium text-gray-900">
                     Instructions
@@ -219,7 +232,6 @@ const RecipeForm = ({ handleFormSubmit }) => {
                     onChange={(e) => setCaption(e.target.value)}
                   />
                 </div>
-
               </div>
               <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                 <button

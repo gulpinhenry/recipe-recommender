@@ -47,11 +47,11 @@ const Nav = ({search,setSearch,setShowMenu,profileImg}) => {
       </div>
 
 
-       <div className="n-profile" >
+       {/* <div className="n-profile" >
           <Link to="/profile">
             <img src={profileImg ? (profileImg) : Profile} className='n-img' style={{marginBottom:"-7px"}}/>
           </Link>
-      </div>
+      </div> */}
 
     </nav>
   )
