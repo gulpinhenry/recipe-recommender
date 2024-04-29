@@ -376,7 +376,6 @@ router.get('/rating/post/:id', async (req, res) => {
 router.post('/rating/create', async (req, res) => {
   try {
     const { username, recipename, post_id, score, comment } = req.body;
-
     // Example of resolving entities (the actual implementation would likely be more complex)
     const user = await User.findOne({ username: username });
     // get recipe to add to rating

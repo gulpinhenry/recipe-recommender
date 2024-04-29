@@ -102,12 +102,9 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
     // Assuming you have the score input in your form
     // const score = document.getElementById("scoreInput").value;
 
-    // Retrieving the username from localStorage
-    const username = localStorage.getItem("username");
-
     // Collecting the necessary data
     const data = {
-      username: username,
+      username: localStorage.getItem("username"),
       recipename: post.name,
       post_id: post.id,
       // score: parseInt(score, 5),
@@ -217,7 +214,7 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
     e.preventDefault();
     try {
       await handleRating(
-        post.username,
+        localStorage.getItem("username"),
         post.name,
         post.id,
         ratingInput,
