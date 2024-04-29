@@ -1,0 +1,65 @@
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px;
+  padding-left: 45px;
+  margin: 0;
+  list-style: none;
+  min-height: 50px;
+}
+
+  .tag-item {
+    background-color: #efefef;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-right: 10px;
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .tag-title{
+    margin-left: 50px;
+  }
+
+  .tag-remove-button {
+    margin-left: 5px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  
+  .tag-remove-button img {
+    width: 16px; 
+    height: 16px;
+  }
+  
+  
+  input {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-left: 50px;
+    padding: 5px;
+    padding-right: 150px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .save-button, .backtrack-button {
+    margin-top: 10px;
+    margin-right: 20px;
+    margin-left: 70px;
+    padding: 8px 16px;
+    background-color: orangered;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100px;
+  }
+  
+  .save-button:hover, .backtrack-button:hover {
+    background-color: #0056b3;
+  }
+  

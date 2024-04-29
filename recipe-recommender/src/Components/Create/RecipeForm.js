@@ -8,11 +8,11 @@ const RecipeForm = ({ handleFormSubmit }) => {
   const [desc, setDesc] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState("");
+  const [description, setDescription] = useState("");
   const [calories, setCalories] = useState(0);
   const [foodCategories, setFoodCategories] = useState([]);
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
-  const [description, setDescription] = useState("");
   const [picture, setPicture] = useState("");
 
   const generateRecipe = async () => {

@@ -1,0 +1,80 @@
+.my-posts-container {
+    position: relative; /* Necessary for absolute positioning of child elements */
+    display: flex;
+    justify-content: center; /* Center the items in the container */
+    align-items: center;
+    align-items: flex-start; /* Align items at the top */
+    overflow: hidden; /* Hide anything that goes outside the bounds */
+    padding: 20px;
+    margin: 20px auto;
+    max-width: calc(80%); /* Adjust based on your layout needs */
+    background: none;
+    border-radius: 8px;
+    box-shadow: none;
+  }
+  
+  .my-post {
+    display: flex; /* Setting the display to flex */
+    flex-direction: column; /* Organizing children in a vertical stack */
+    justify-content: space-between; /* Spacing between the top content and ingredients */
+    flex: 1 1 calc(30% - 40px); /* Reducing width to account for button space */
+    margin: 10px 20px; /* Provide space for buttons */
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    height: 200px; /* Adjust height as necessary */
+  }
+
+  .my-post h3 {
+    font-size: 1.1rem; /* Increase font size for recipe name */
+    font-weight: bold; /* Optional: Make it bold */
+    text-align: center; /* Keep it centered */
+    color: #888
+  }
+  
+  .my-post p {
+    font-size: 1rem; /* Keep the current font size for caption */
+    text-align: left; /* Align caption to the left */
+    padding-left: 30px; /* Add padding to the left */
+    padding-right: 30px; /* Add padding to the right */
+  }
+  
+  .my-posts-nav-buttons {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* This keeps the buttons at the ends */
+  }
+  
+  .my-posts-button {
+    position: absolute; /* Absolute positioning for precise location */
+    top: 50%; /* Align vertically in the middle of the container */
+    transform: translateY(-50%);
+    border: none;
+    background-color: transparent;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 24px;
+    z-index: 2; /* Ensures the button is clickable over other elements */
+  }
+  
+  .my-posts-button.prev { /* Additional class for the previous button */
+    left: 10px; /* Adjust as needed to avoid overlap */
+  }
+  
+  .my-posts-button.next { /* Additional class for the next button */
+    right: 10px; /* Adjust as needed to avoid overlap */
+  }
+
+  .ingredients {
+    text-align: left; /* Ensures the ingredients list is aligned to the left */
+    padding: 10px 30px; /* Adds padding around the list */
+    font-size: 0.9rem; /* Smaller font size for ingredients */
+    white-space: normal; /* Allows text to wrap */
+    overflow: visible; /* Allows overflow content to be visible */
+  }
+
+  

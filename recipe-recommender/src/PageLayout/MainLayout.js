@@ -76,7 +76,7 @@ const LandingPage = () => {
       <div className="home">
         <Left />
         <Middle posts={posts} />
-        {/* <Right /> */}
+        <Right />
       </div>
     </div>
   );

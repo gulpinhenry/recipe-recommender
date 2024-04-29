@@ -44,7 +44,7 @@ const Left = ({
       <div id='L-box' onClick={()=>setBtnActive("#saved")} className={btnActive === "#saved" ? "active" : ""}>
         <BsBookmark
          className='margin'/>
-        <span style={{ marginLeft: '8px' }}>Saved Post</span>
+        <span style={{ marginLeft: '8px' }}>Saved Recipe</span>
       </div>
       </Link>
 
