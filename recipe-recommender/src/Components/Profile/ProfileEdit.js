@@ -34,6 +34,7 @@ const TagInput = ({ title, tags, setTags, inputValue, setInputValue }) => {
         ))}
       </ul>
       <input
+        className="tag-input-field"
         type="text"
         value={inputValue}
         onChange={handleInputChange}
@@ -43,5 +44,4 @@ const TagInput = ({ title, tags, setTags, inputValue, setInputValue }) => {
     </div>
   );
 };
-
 export default TagInput;
