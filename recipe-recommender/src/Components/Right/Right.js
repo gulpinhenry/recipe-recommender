@@ -8,7 +8,7 @@ const Right = ({}) => {
   return (
     <div className={showMenu ? "R-Side active" : "R-Side unActive"}>
       {/* <Following/> */}
-      <PopularList/>
+      {/* <PopularList/> */}
     </div>
   )
 }

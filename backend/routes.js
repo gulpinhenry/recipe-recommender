@@ -171,6 +171,32 @@ router.post('/recipe/add', async (req, res) => {
 });
 
 
+// Get recipeUsed by username
+
+router.get('/user/recipes/:username', async (req, res) => {
+  try {
+    const username = req.params.username;
+    const user = await User.findOne({ username })
+                            .populate('recipesUsed'); // assuming 'recipesUsed' is the correct field name in the User model
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: 'Retrieved user recipes successfully',
+      data: user.recipesUsed
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 // Get Post by ID
 router.get('/post/:id', async (req, res) => {
   try {
@@ -195,10 +221,17 @@ router.get('/post/:id', async (req, res) => {
 });
 
 // Get Posts by User
-router.get('/post/user/:id', async (req, res) => {
+router.get('/post/user/:username', async (req, res) => {
   try {
-    const { id } = req.params;
-    const posts = await Post.find({ user: id }).populate('user').populate('recipe').populate('ratings');
+    const { username } = req.params;
+    const user = await User.findOne({ username: username });
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    const posts = await Post.find({ user: user._id })
+      .populate('user')
+      .populate('recipe')
+      .populate('ratings');
     res.status(200).json({
       success: true,
       data: posts
@@ -343,7 +376,6 @@ router.get('/rating/post/:id', async (req, res) => {
 router.post('/rating/create', async (req, res) => {
   try {
     const { username, recipename, post_id, score, comment } = req.body;
-
     // Example of resolving entities (the actual implementation would likely be more complex)
     const user = await User.findOne({ username: username });
     // get recipe to add to rating
@@ -426,6 +458,35 @@ router.post('/user/settings', async (req, res) => {
   }
 });
 
+// GET user settings
+router.get('/user/settings/:username', async (req, res) => {
+  try {
+    const { username } = req.params; // Accessing username from URL parameter
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+    // Return only the necessary user settings information
+    const settings = {
+      allergy: user.allergy,
+      tastePreferences: user.tastePreferences
+    };
+    res.status(200).json({
+      success: true,
+      message: 'User settings retrieved successfully',
+      data: settings
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+
 
 module.exports = router;
-
