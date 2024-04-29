@@ -305,7 +305,7 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
       <p className="body">
         <br></br>
         {post.caption}
-        
+
       </p>
       <div className="post-img-container">
         {tempImage && (
@@ -319,9 +319,9 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
           </>
         )}
       </div>
-      
+
       {/* Add just the post name a link to the full recipe, no image */}
-      
+
       <Link to={`/recipe/${post.id}`} className="post-link">
         <p className="post-link-text">view recipe</p>
       </Link>
@@ -383,7 +383,7 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
               </form>
 
               <div className="sticky">
-                {postComments.map((comment) => (
+                {postComments.reverse().map((comment) => (
                   <Comments cmt={comment} />
                 ))}
               </div>
