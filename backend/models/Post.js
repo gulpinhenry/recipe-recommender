@@ -16,6 +16,11 @@ const postSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Recipe', // Reference to the Recipe model, optional
     default: null,
+  },
+  picture: {
+    type: String,
+    default: '',
+    trim: true,
   }
 }, {
   timestamps: true, // Automatically adds createdAt and updatedAt timestamps

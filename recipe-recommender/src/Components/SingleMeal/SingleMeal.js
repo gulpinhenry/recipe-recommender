@@ -9,6 +9,13 @@ const MealSingle = ({}) => {
   const { id } = useParams();
   const [meal, setMeal] = useState(null);
 
+  const defaultPic = (img) => {
+    if (img == "") {
+      return "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
+    }
+    return img;
+  };
+
   useEffect(() => {
     fetch(`/api/post/${id}`)
       .then((response) => {
@@ -26,18 +33,20 @@ const MealSingle = ({}) => {
   }, []);
 
   let tags = meal?.recipe?.foodCategories;
-  console.log(tags);
   // let ingredients = meal?.recipe?.ingredients?.spplit;
   let ingredients = meal?.recipe?.ingredients;
-  let instructions = meal?.recipe?.instructions?.split(/(?=\d\.)/).map(step => step.trim()).filter(step => step !== "");
+  let instructions = meal?.recipe?.instructions
+    ?.split(/(?=\d\.)/)
+    .map((step) => step.trim())
+    .filter((step) => step !== "");
   instructions = instructions?.filter((instruction) => instruction.length > 1);
 
   return (
     <section className="sc-details bg-white">
       <div className="details-head grid">
-        {/* <div className="details-img">
-          <img src={meal?.thumbnail} alt="" className="img-cover" />
-        </div> */}
+        <div className="details-img">
+          <img src={defaultPic(meal?.picture)} alt="" className="img-cover" />
+        </div>
 
         <div className="details-intro">
           <h3 className="title text-orange">{meal?.recipe?.name}</h3>

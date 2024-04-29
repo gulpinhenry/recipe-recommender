@@ -16,17 +16,6 @@ import { MdBlockFlipped } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdReportGmailerrorred } from "react-icons/md";
 
-import { LiaFacebookF } from "react-icons/lia";
-import { FiInstagram } from "react-icons/fi";
-import { BiLogoLinkedin } from "react-icons/bi";
-import { AiFillYoutube } from "react-icons/ai";
-import { RxTwitterLogo } from "react-icons/rx";
-import { FiGithub } from "react-icons/fi";
-
-import img1 from "../../Assets/middle_static/img-1.jpg";
-import img2 from "../../Assets/middle_static/img-3.jpg";
-import img3 from "../../Assets/middle_static/img-4.jpg";
-
 import Profile from "../../Assets/profile1.jpg";
 
 import { useState, useEffect } from "react";
@@ -44,6 +33,13 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
 
   const [filledLike, setFilledLike] = useState(<FavoriteBorderOutlinedIcon />);
   const [unFilledLike, setUnFilledLike] = useState(false);
+
+  const defaultPic = (img) => {
+    if (img == "") {
+      return "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg";
+    }
+    return img;
+  };
 
   const handlelikes = () => {
     setLike(unlike ? like - 1 : like + 1);
@@ -228,7 +224,6 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
         commentInput
       );
       const newComments = await fetchRatingsByPostId(post.id);
-      // console.log(newComments);
       setPostComments(newComments);
     } catch (error) {
       console.error("Error in creating comment:", error);
@@ -271,7 +266,7 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
       alert("Failed to add recipe to your list.");
     }
   };
-
+  console.log(post);
   return (
     <div className="post">
       <Link to="/FriendsId" style={{ textDecoration: "none" }}>
@@ -312,16 +307,12 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
       </div>
       <p className="body">
         <br></br>
-        {post.name}: {post.caption}
-        
+        {post.caption}
       </p>
-      <Link to={`/recipe/${post.id}`} className="post-link">
-        <p className="post-link-text">view recipe</p>
-      </Link>
-      {/* <div className="post-img-container">
+      <div className="post-img-container">
         {tempImage && (
           <>
-            <img src={tempImage} alt="" className="post-img" />
+            <img src={defaultPic(post.picture)} alt="" className="post-img" />
             <div className="img-overlay">
               <Link to={`/recipe/${post.id}`}>
                 <p className="img-text">{post.name}</p>
@@ -329,16 +320,15 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
             </div>
           </>
         )}
-      </div> */}
-      
+      </div>
+
       {/* Add just the post name a link to the full recipe, no image */}
-      
 
       <div className="post-foot">
         <div className="post-footer">
           <div className="like-icons">
             <StarRating
-              currentRating={getAverageRating(post.ratings)}
+              currentRating={getAverageRating(postComments)}
               post={post}
             />
 
@@ -366,6 +356,11 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
                     placeholder="Add a comment..."
                     onChange={(e) => setCommentInput(e.target.value)}
                     value={commentInput}
+                    style={{
+                      flexGrow: 1,
+                      marginRight: "8px",
+                      flexBasis: "auto",
+                    }}
                   />
                   {/* add another input for the score */}
                   <input
@@ -375,11 +370,10 @@ const Post = ({ post, posts, setPosts, setFriendsProfile, images }) => {
                     placeholder="Score (1-5)"
                     onChange={(e) => setRatingInput(e.target.value)}
                     value={ratingInput}
+                    style={{ width: "200px", flexGrow: 0 }}
                   />
 
-                  <button
-                    type="submit"
-                  >
+                  <button type="submit">
                     <SendRoundedIcon className="send" />
                   </button>
                 </div>

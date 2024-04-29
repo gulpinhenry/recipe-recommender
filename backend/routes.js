@@ -119,7 +119,7 @@ router.post('/recipe/create', async (req, res) => {
       instructions,
       calories,
       foodCategories,
-      ratings: []  
+      ratings: []
     };
     const recipe = new Recipe(recipeData);
 
@@ -258,7 +258,7 @@ router.get('/post/recent/:n', async (req, res) => {
 // Create Post
 router.post('/post/create', async (req, res) => {
   try {
-    const { caption, username, recipename } = req.body;
+    const { caption, username, recipename, picture } = req.body;
 
     // Ensure the user ID is provided (User existence check could also be added here if necessary)
     const user = await User.findOne({ username })
@@ -276,7 +276,7 @@ router.post('/post/create', async (req, res) => {
         message: 'Recipe not found'
       });
     }
-    const postData = { caption, user, recipe };
+    const postData = { caption, user, recipe, picture };
     const post = new Post(postData);
     await post.save();
 

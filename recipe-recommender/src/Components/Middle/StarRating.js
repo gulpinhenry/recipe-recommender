@@ -10,6 +10,9 @@ const StarRating = ({ currentRating, maxRating = 5, post }) => {
   const [hoverValue, setHoverValue] = useState(undefined);
   const stars = Array(5).fill(0);
 
+  useEffect(() => {
+    setCurrentValue(currentRating);
+  }, [currentRating]);
   // const updateRatingDisplay = async (postId) => {
   //   try {
   //     const response = await fetch(`/api/rating/post/${postId}`);
