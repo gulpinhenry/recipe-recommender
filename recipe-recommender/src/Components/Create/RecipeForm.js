@@ -13,7 +13,6 @@ const RecipeForm = ({ handleFormSubmit }) => {
   const [foodCategories, setFoodCategories] = useState([]);
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
-  const [description, setDescription] = useState("");
   const [picture, setPicture] = useState("");
 
   const generateRecipe = async () => {
