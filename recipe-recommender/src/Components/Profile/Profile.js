@@ -9,6 +9,7 @@ import "../Profile/Profile.css"
 
 import TagInput from "./ProfileEdit"
 import "./MyPost.css"
+import PostCard from "./PostCard"
 import moment from 'moment';
 
 const MyPosts = ({ username }) => {
@@ -45,16 +46,7 @@ const MyPosts = ({ username }) => {
   return (
     <div className="my-posts-container">
       {posts.slice(index, index + pageSize).map((post, idx) => (
-        <div key={idx} className="my-post">
-          <div>
-            <h3>{post.recipe ? post.recipe.name : 'No Recipe Name'}</h3>
-            <p>{post.caption}</p>
-          </div>
-          <div className="ingredients">
-            <strong>Ingredients: </strong>
-            {post.recipe ? post.recipe.ingredients.join(', ') : 'No Ingredients'}
-          </div>
-        </div>
+        <PostCard key={idx} post={post} />
       ))}
       <button onClick={handlePrev} disabled={index === 0} className="my-posts-button prev">&#10094;</button>
       <button onClick={handleNext} disabled={index >= posts.length - pageSize} className="my-posts-button next">&#10095;</button>
