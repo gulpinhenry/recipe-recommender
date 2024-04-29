@@ -2,7 +2,7 @@
   display: flex;
   flex-wrap: wrap;
   padding: 5px;
-  padding-left: 15px;
+  padding-left: 45px;
   margin: 0;
   list-style: none;
   min-height: 50px;
@@ -19,7 +19,7 @@
   }
   
   .tag-title{
-    margin-left: 20px;
+    margin-left: 50px;
   }
 
   .tag-remove-button {
@@ -39,8 +39,9 @@
   input {
     margin-top: 10px;
     margin-bottom: 20px;
-    margin-left: 20px;
+    margin-left: 50px;
     padding: 5px;
+    padding-right: 150px;
     border: 1px solid #ccc;
     border-radius: 3px;
   }
@@ -48,7 +49,7 @@
   .save-button, .backtrack-button {
     margin-top: 10px;
     margin-right: 20px;
-    margin-left: 20px;
+    margin-left: 70px;
     padding: 8px 16px;
     background-color: orangered;
     color: white;
